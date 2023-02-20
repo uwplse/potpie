@@ -1,5 +1,5 @@
 From Coq Require Import String Arith Psatz Bool List Program.Equality.
-From DanTrick Require Import DanTrickLanguage DanLogic.
+From DanTrick Require Import DanTrickLanguage.
 
 
 Local Open Scope string_scope.

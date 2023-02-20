@@ -9,7 +9,6 @@
 ./DanImpHigherOrderRel.v
 ./DanImpHigherOrderRelTheorems.v
 ./DanLogHoare.v
-./DanLogic.v
 ./DanLogicHelpers.v
 ./DanLogProp.v
 ./DanLogPropDec.v

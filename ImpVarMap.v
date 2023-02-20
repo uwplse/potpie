@@ -1,5 +1,5 @@
 From Coq Require Import String Arith Psatz Bool List Program.Equality Lists.ListSet ZArith.
-From DanTrick Require Import DanTrickLanguage DanLogic DanLogicHelpers StackLanguage StackLangEval StackLangTheorems.
+From DanTrick Require Import DanTrickLanguage DanLogicHelpers StackLanguage StackLangEval StackLangTheorems.
 
 Local Open Scope string_scope.
 Local Open Scope nat_scope.
