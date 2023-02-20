@@ -685,7 +685,7 @@ End SmallerCompiler.
 
 Module MaxSmallCompiled := CompileProof CompileMaxProofs SmallerCompiler.
 
-(* Time Eval compute in MaxSmallCompiled.compiled. *)
+Time Eval compute in MaxSmallCompiled.compiled.
 
 From DanTrick Require Import StackLogic StackLanguage.
 Local Example stack_pure_rel_var_stk2 :
