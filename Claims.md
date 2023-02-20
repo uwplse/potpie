@@ -1,7 +1,7 @@
 ## Claims
 1. `stack_pure`: This captures what it means for an expression to
-   preserve the stack: the rest of the stack will be the same before
-   and after.
+   preserve the stack: the stack will be the same before
+   and after execution of a stack-preserving expression.
 6. `transform_prop_exprs_adequacy_forward`: The formalization is very similar 
    to the prose description in theorem 4.
 7. `UIP_AbsEnv`: This is just UIP for specifications in our source logic
