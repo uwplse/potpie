@@ -1,8 +1,8 @@
 # potpie
 Proof Object Transformation, Preserving Imp Embeddings: the first proof compiler to be formally proven correct
 
-## Arxiv link
-TODO
+<!-- ## Arxiv link -->
+<!-- TODO -->
 
 ## Guide to Code Referenced in the Paper
 
