@@ -6,7 +6,7 @@ Proof Object Transformation, Preserving Imp Embeddings: the first proof compiler
 
 ## Guide to Code Referenced in the Paper
 
-See [GUIDE.md](guide.md)
+See [GUIDE.md](GUIDE.md)
 
 ## How to Build
 
