@@ -1,0 +1,9 @@
+package "plugin" (
+  directory = "."
+  requires = ""
+  archive(byte) = "hoarechecker_plugin.cma"
+  archive(native) = "hoarechecker_plugin.cmxa"
+  plugin(byte) = "hoarechecker_plugin.cma"
+  plugin(native) = "hoarechecker_plugin.cmxs"
+)
+directory = "."

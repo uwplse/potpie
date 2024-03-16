@@ -1,0 +1,840 @@
+From Coq Require Import Arith Psatz Bool String List Nat Program.Equality.
+
+Local Open Scope string_scope.
+Local Open Scope nat_scope.
+Local Open Scope list_scope.
+
+From Imp_LangTrick Require Import StackLanguage LogicProp StackSubstitution StackPurest StackExprWellFormed.
+
+(* Require Import Imp_LangTrick.StackLanguage Imp_LangTrick.StackLangEval Imp_LangTrick.LogicProp.LogicProp Imp_LangTrick.StackSubstitution Imp_LangTrick.StackPurest Imp_LangTrick.StackExprWellFormed. *)
+
+From Imp_LangTrick Require Export StackLogicBase.
+
+Scheme Equality for list.
+
+
+
+                           
+
+
+Definition triple_stk (P: AbsState) (i: imp_stack) (Q: AbsState) (fenv: fun_env_stk): Prop :=
+  forall (stk stk': stack),
+    imp_stack_sem i fenv stk stk' ->
+    (absstate_match_rel P fenv stk) ->
+    (absstate_match_rel Q fenv stk').
+
+Notation "{{{ P }}} i {{{ Q }}} @ f" := (triple_stk P i Q f) (at level 90, i at next level).
+    
+
+
+
+Definition atruestk (b: bexp_stack) (P: AbsState): AbsState :=
+  (AbsAnd P (BaseState (AbsStkTrue)
+                       (MetaBool (UnaryProp _ _
+                                            (fun bval => bval = true)
+                                            b)))).
+
+Definition afalsestk (b: bexp_stack) (P: AbsState) : AbsState :=
+  (AbsAnd P (BaseState (AbsStkTrue)
+                       (MetaBool (UnaryProp _ _
+                                            (fun bval => bval = false)
+                                            b)))).
+(* bexp_stack_sem b fenv stk (stk', false) /\ P stk. *)
+
+
+Definition aimpstk (P Q: AbsState) (fenv: fun_env_stk) : Prop :=
+  forall stk,
+    absstate_match_rel P fenv stk -> absstate_match_rel Q fenv stk.
+
+Definition aandstk (P Q: assertion): assertion :=
+  fun stk => P stk /\ Q stk.
+
+Lemma self_implication :
+  forall (s: AbsState) (fenv: fun_env_stk),
+    (aimpstk s s fenv).
+Proof.
+  unfold aimpstk. intros. auto.  
+Qed. 
+
+Check (aandstk silly silly).
+
+Lemma anding_silly :
+  forall stk,
+    ~ (aandstk silly silly stk).
+Proof.
+  intros. unfold aandstk, not. intros.
+  destruct H.
+  apply silly_theorem in H.
+  assumption.
+Qed.
+
+
+
+Notation "P --->>> Q" := (aimpstk P Q) (at level 95, no associativity).
+
+Definition implication_env_stk := list (AbsState * AbsState). 
+
+Definition fact_env_valid fact_env fenv :=
+  forall P Q, 
+  List.In (P, Q) fact_env ->
+  aimpstk P Q fenv. 
+
+
+Inductive hl_stk : AbsState -> imp_stack -> AbsState -> implication_env_stk -> fun_env_stk -> Type :=
+| hl_stk_skip :
+  forall P fact_env fenv,
+    fact_env_valid fact_env fenv ->
+    hl_stk P Skip_Stk P fact_env fenv
+| hl_stk_assign :
+  forall P k a P' fact_env fenv,
+  fact_env_valid fact_env fenv ->
+    aexp_stack_pure_rel a fenv ->
+    (* absstate_well_formed P -> *)
+    state_update_rel k a P P' ->
+    hl_stk P' (Assign_Stk k a) P fact_env fenv
+| hl_stk_push :
+  forall P P' fact_env fenv,
+  fact_env_valid fact_env fenv ->
+    state_stk_size_inc 1 P P' ->
+    (* absstate_well_formed P -> *)
+    hl_stk P (Push_Stk) P' fact_env fenv
+| hl_stk_pop :
+  forall P P' Q fact_env fenv,
+  fact_env_valid fact_env fenv ->
+    state_stk_size_inc 1 P' P ->
+    (* absstate_well_formed P' -> *)
+    hl_stk (AbsAnd P Q) (Pop_Stk) P' fact_env fenv 
+| hl_stk_seq :
+  forall P Q R i1 i2 fact_env fenv,
+  fact_env_valid fact_env fenv ->
+    hl_stk P i1 R fact_env fenv ->
+    hl_stk R i2 Q fact_env fenv ->
+    hl_stk P (Seq_Stk i1 i2) Q fact_env fenv
+| hl_stk_if :
+  forall P Q b i1 i2 fact_env fenv,
+  fact_env_valid fact_env fenv ->
+    bexp_stack_pure_rel b fenv ->
+    hl_stk (atruestk b P) i1 Q fact_env fenv ->
+    hl_stk (afalsestk b P) i2 Q fact_env fenv ->
+    hl_stk P (If_Stk b i1 i2) Q fact_env fenv
+| hl_stk_while :
+  forall P b i fact_env fenv,
+    fact_env_valid fact_env fenv ->
+    bexp_stack_pure_rel b fenv ->
+    hl_stk (atruestk b P) i P fact_env fenv ->
+    hl_stk P (While_Stk b i) (afalsestk b P) fact_env fenv
+| hl_stk_consequence_STKONLY : 
+    forall P Q P' Q' c fact_env fenv,
+      hl_stk P c Q fact_env fenv ->
+      (P' --->>> P) fenv ->
+      (Q --->>> Q') fenv ->
+      hl_stk P' c Q' fact_env fenv
+| hl_stk_consequence_pre :
+  forall P Q P' c n fact_env fenv,
+    fact_env_valid fact_env fenv ->
+    hl_stk P c Q fact_env fenv ->
+    List.nth_error fact_env n = Some (P', P) ->
+    hl_stk P' c Q fact_env fenv
+| hl_stk_consequence_post :
+  forall P Q Q' c n fact_env fenv,
+    fact_env_valid fact_env fenv ->
+    hl_stk P c Q fact_env fenv ->
+    List.nth_error fact_env n = Some (Q, Q') ->
+    hl_stk P c Q' fact_env fenv. 
+
+Check hl_stk_ind.
+
+
+
+
+
+
+Lemma Hoare_Stk_consequence_pre :
+  forall P P' Q i fact_env fenv,
+    hl_stk P i Q fact_env fenv ->
+    (P' --->>> P) fenv ->
+    hl_stk P' i Q fact_env fenv.
+Proof.
+  intros.
+  apply hl_stk_consequence_STKONLY with (P := P) (Q := Q); unfold aimpstk; auto.
+Qed.
+
+
+Lemma Hoare_Stk_consequence_post :
+  forall P Q Q' i fact_env fenv,
+    hl_stk P i Q fact_env fenv ->
+    (Q --->>> Q') fenv ->
+    hl_stk P i Q' fact_env fenv.
+Proof.
+  intros.
+  apply hl_stk_consequence_STKONLY with (P := P) (Q := Q); unfold aimpstk; auto.
+Qed.
+
+
+(* Lemma Hoare_Stk_ifthen :
+  forall b i P Q fact_env fenv,
+    bexp_stack_pure_rel b fenv ->
+    hl_stk (atruestk b P) i Q fact_env fenv ->
+    ((afalsestk b P) --->>> Q) fenv ->
+    hl_stk P (If_Stk b i Skip_Stk) Q fenv.
+Proof.
+  intros. apply (hl_stk_if P Q b i Skip_Stk fenv); auto.
+  apply Hoare_Stk_consequence_pre with Q.
+  - auto using hl_stk_skip.
+  - assumption.
+Qed. *)
+
+Ltac invs H := inversion H; subst.
+
+Lemma triple_stk_skip :
+  forall P fenv,
+    {{{P}}} Skip_Stk {{{P}}} @ fenv.
+Proof.
+  unfold triple_stk; intros. invs H. assumption.
+Qed.
+
+Lemma triple_stk_assign :
+  forall P P' (k: stack_index) (a: aexp_stack) fenv,
+    aexp_stack_pure_rel a fenv ->
+    (* absstate_well_formed P -> *)
+    state_update_rel k a P P' ->
+    {{{P'}}} Assign_Stk k a {{{P}}} @ fenv.
+Proof.
+  unfold triple_stk, stk_update. intros P P' k a fenv PURE STATE_UP.
+  intros.
+  invs H.
+
+  pose proof (PURE' := PURE).
+  eapply aexp_stack_pure_backwards in PURE.
+  unfold aexp_stack_pure in PURE.
+  specialize (PURE stk stk'0 c).
+
+  pose proof (H10 := H5).
+  apply PURE in H5.
+  symmetry in H5.
+  subst.
+  invs STATE_UP.
+  - assert (absstate_well_formed (BaseState s m)).
+    econstructor.
+    assumption.
+    
+    eapply state_update_same_as_eval_under_different_state with (k := k) (a := a) (aval := c) (stk := stk) (stk' := stk'); eassumption.
+  - assert (absstate_well_formed (AbsAnd s1 s2)) by (econstructor; eassumption).
+    eapply state_update_same_as_eval_under_different_state with (k := k) (a := a) (aval := c) (stk := stk) (stk' := stk'); eassumption.
+  - assert (absstate_well_formed (AbsOr s1 s2)) by (econstructor; eassumption).
+    eapply state_update_same_as_eval_under_different_state with (k := k) (a := a) (aval := c) (stk := stk) (stk' := stk'); eassumption.
+Qed.
+
+
+Ltac absstack_size :=
+  match goal with
+  | [ |- absstack_match_rel (AbsStkSize 1) (?v :: ?vs) ] =>
+      econstructor; simpl; intuition
+  end.
+
+Ltac match_inversion :=
+  match goal with
+  | [ H: absstate_match_rel (BaseState ?s ?Meta) ?fenv ?stk |- _ ] =>
+      invs H;
+      (* idtac "match 1"; *)
+      match goal with
+      | [ H': meta_match_rel Meta fenv stk |- _ ] =>
+          invs H';
+          (* idtac "match 2"; *)
+          match goal with
+          | [ H'' : eval_prop_rel ?func ?LogProp |- _ ] =>
+              invs H''
+              (* idtac "match 3" *)
+                   
+          end;
+          match goal with
+          | [ H''' : prop_rel ?func ?LogProp |- _ ] =>
+              invs H'''
+              (* idtac "match 4" *)
+          end
+      end
+  end;
+  match goal with
+  | [ H : absstate_well_formed (BaseState ?s ?Meta) |- _ ] =>
+      invs H;
+      match goal with
+      | [ H' : mv_well_formed Meta |- _ ] =>
+          invs H'
+      | [ |- _ ] =>
+          idtac "no mv_well_formed"
+      end
+  | [ |- _ ] =>
+      idtac "no absstate_well_formed"
+  end.
+
+
+Ltac meta_match_elimination_helper p1 p2 p1' p2' :=
+  match goal with
+  | [ H': transformed_prop_exprs _ p1 p1' |- _ ] =>
+      econstructor
+  | [ H': transformed_prop_exprs _ p2 p2' |- _ ] =>
+      eapply RelOrPropRight
+  end.
+
+Ltac meta_match_elimination :=
+  match goal with
+  | [  |- meta_match_rel (_ (OrProp ?ValType ?ExprType ?p1' ?p2')) ?fenv ?stk ] =>
+      econstructor;
+      match goal with
+      | [ H: eval_prop_rel _ (OrProp ValType ExprType ?p1 ?p2)  |- _ ] =>
+          match goal with
+          | [ H': eval_prop_rel _ p1 |- _ ] =>
+              (* idtac "found or, p1"; *)
+              econstructor
+          | [ H': eval_prop_rel _ p2 |- _ ] =>
+              (* idtac "found or, p2"; *)
+              eapply RelOrPropRight
+          end
+      | [ |- _ ] =>
+          idtac "Found nothing"
+      end
+  | [ |- meta_match_rel _ _ _ ] =>
+      econstructor;
+      (* idtac "not or"; *)
+      econstructor
+  end.
+
+Ltac smart_pure_helper :=
+  match goal with
+  | [  H0 : transformed_prop_exprs (bexp_stk_size_inc_rel 1) ?p1 ?p1', H13 : prop_rel
+          (fun boolexpr : bexp_stack => bexp_stack_pure_rel boolexpr ?fenv)
+          ?p1
+       |- prop_rel
+           (fun boolexpr : bexp_stack => bexp_stack_pure_rel boolexpr ?fenv) ?p1' ] =>
+      eapply bool_prop_rel_prop_stk_inc_preserves_purity; [ eapply H13 | eassumption]
+  | [ H0: transformed_prop_exprs_args (bexp_stk_size_inc_rel 1) ?args ?args',
+        H1: prop_args_rel (fun boolexpr : bexp_stack =>
+                             bexp_stack_pure_rel boolexpr ?fenv)
+                          ?args |-
+        prop_args_rel (fun boolexpr : bexp_stack =>
+                         bexp_stack_pure_rel boolexpr ?fenv)
+                      ?args' ] =>
+      eapply bool_prop_args_rel_prop_stk_inc_preserves_purity; eassumption
+  | [ H0: bexp_stk_size_inc_rel 1 ?a ?a',
+        H1: bexp_stack_pure_rel ?a ?fenv |-
+        bexp_stack_pure_rel ?a' ?fenv ] =>
+      eapply bexp_size_inc_preserves_purity; eassumption
+                                                            
+  | [  H0 : transformed_prop_exprs (aexp_stk_size_inc_rel 1) ?p1 ?p1',
+       H13 : prop_rel
+               (fun natexpr : aexp_stack =>
+                  aexp_stack_pure_rel natexpr ?fenv)
+               ?p1
+       |- prop_rel
+           (fun natexpr : aexp_stack =>
+              aexp_stack_pure_rel natexpr ?fenv)
+           ?p1' ] =>
+      eapply nat_prop_rel_prop_stk_inc_preserves_purity; [ eapply H13 | eassumption]
+  | [ H0: aexp_stk_size_inc_rel 1 ?a ?a',
+        H1: aexp_stack_pure_rel ?a ?fenv |-
+        aexp_stack_pure_rel ?a' ?fenv ] =>
+      eapply aexp_size_inc_preserves_purity; eassumption
+  | [ H0: transformed_prop_exprs_args (aexp_stk_size_inc_rel 1) ?args ?args',
+        H1: prop_args_rel (fun natexpr : aexp_stack =>
+                             aexp_stack_pure_rel natexpr ?fenv)
+                          ?args |-
+        prop_args_rel (fun natexpr : aexp_stack =>
+                         aexp_stack_pure_rel natexpr ?fenv)
+                      ?args' ] =>
+      eapply nat_prop_args_rel_prop_stk_inc_preserves_purity; eassumption
+        
+  end.
+
+
+
+Lemma triple_stk_push :
+  forall P Q fenv,
+    state_stk_size_inc 1 P Q ->
+    {{{P}}} Push_Stk {{{Q}}} @ fenv.
+Proof.
+  unfold triple_stk.
+  induction P; intros Q fenv INC stk stk' IMP MATCH.
+  - invs INC.
+    invs H2; invs IMP.
+    + econstructor; [absstack_size | ].
+      invs H4.
+      * invs H; match_inversion; meta_match_elimination; try smart_pure_helper.
+        1,3,4,10-12: eapply bexp_stack_increase_preserves_eval; eassumption.
+        3-6: eapply logic_stack_increase_preserves_eval; eassumption.
+        4: eapply bool_args_stack_increase_preserves_eval; eassumption.
+        all: try eassumption; try eapply bexp_size_inc_preserves_purity; try eassumption; try smart_pure_helper.
+      * invs H; match_inversion; meta_match_elimination; try smart_pure_helper.
+        1,3,4,10-12: eapply aexp_stack_increase_preserves_eval; eassumption.
+        3-6: eapply nat_logic_stack_increase_preserves_eval; eassumption.
+        4: eapply nat_args_stack_increase_preserves_eval; eassumption.
+        all: try assumption.        
+    + econstructor.
+      * invs MATCH.
+        invs H1.
+        econstructor.
+        simpl.
+        intuition.
+      * invs H4.
+        -- invs H; match_inversion; meta_match_elimination; try smart_pure_helper;
+             (* try smart_match_helper; *)
+             try eapply bexp_stack_increase_preserves_eval; try eapply logic_stack_increase_preserves_eval; try eapply bool_args_stack_increase_preserves_eval; eassumption.
+        -- invs H; match_inversion; meta_match_elimination; try smart_pure_helper; try eapply aexp_stack_increase_preserves_eval; try eapply nat_logic_stack_increase_preserves_eval; try eapply nat_args_stack_increase_preserves_eval; eassumption.
+  - invs INC. invs MATCH.
+    econstructor.
+    + eapply IHP1; eassumption.
+    + eapply IHP2; eassumption.
+  - invs INC. invs MATCH.
+    + econstructor. eapply IHP1.
+      * eassumption.
+      * eassumption.
+      * assumption.
+    + eapply RelAbsOrRight. eapply IHP2; eassumption.
+Qed.
+
+Ltac smart_pure_helper' :=
+  match goal with
+  | [  H0 : transformed_prop_exprs (bexp_stk_size_inc_rel 1) ?p1 ?p1', H13 : prop_rel
+          (fun boolexpr : bexp_stack => bexp_stack_pure_rel boolexpr ?fenv)
+          ?p1',
+          H14: prop_rel bexp_well_formed ?p1
+       |- prop_rel
+           (fun boolexpr : bexp_stack => bexp_stack_pure_rel boolexpr ?fenv) ?p1 ] =>
+      eapply bool_prop_rel_prop_stk_inc_preserves_purity';
+      [eapply H13 | unfold bool_prop_wf; unfold_prop_helpers | eapply H0 ];
+      eassumption
+  | [ H0: transformed_prop_exprs_args (bexp_stk_size_inc_rel 1) ?args ?args',
+        H1: prop_args_rel (fun boolexpr : bexp_stack =>
+                             bexp_stack_pure_rel boolexpr ?fenv)
+                          ?args',
+          H2: prop_args_rel bexp_well_formed ?args |-
+        
+        prop_args_rel (fun boolexpr : bexp_stack =>
+                         bexp_stack_pure_rel boolexpr ?fenv)
+                      ?args ] =>
+      eapply bool_prop_args_rel_prop_stk_inc_preserves_purity'; eassumption
+  | [ H0: bexp_stk_size_inc_rel 1 ?a ?a',
+        H1: bexp_stack_pure_rel ?a' ?fenv,
+          H2: bexp_well_formed ?a
+      |-
+        bexp_stack_pure_rel ?a ?fenv ] =>
+      eapply bexp_size_inc_preserves_purity'; eassumption
+                                                            
+  | [  H0 : transformed_prop_exprs (aexp_stk_size_inc_rel 1) ?p1 ?p1',
+       H13 : prop_rel
+               (fun natexpr : aexp_stack =>
+                  aexp_stack_pure_rel natexpr ?fenv)
+               ?p1',
+          H14 : prop_rel aexp_well_formed ?p1
+       |- prop_rel
+           (fun natexpr : aexp_stack =>
+              aexp_stack_pure_rel natexpr ?fenv)
+           ?p1 ] =>
+      eapply nat_prop_rel_prop_stk_inc_preserves_purity';
+      [ eapply H13 | unfold nat_prop_wf; unfold_prop_helpers | eapply H0];
+      eassumption
+  | [ H0: aexp_stk_size_inc_rel 1 ?a ?a',
+        H1: aexp_stack_pure_rel ?a' ?fenv |-
+        aexp_stack_pure_rel ?a ?fenv ] =>
+      eapply aexp_size_inc_preserves_purity'; eassumption
+  | [ H0: transformed_prop_exprs_args (aexp_stk_size_inc_rel 1) ?args ?args',
+        H1: prop_args_rel (fun natexpr : aexp_stack =>
+                             aexp_stack_pure_rel natexpr ?fenv)
+                          ?args' |-
+        prop_args_rel (fun natexpr : aexp_stack =>
+                         aexp_stack_pure_rel natexpr ?fenv)
+                      ?args ] =>
+      eapply nat_prop_args_rel_prop_stk_inc_preserves_purity'; eassumption
+        
+  end.
+
+Ltac match_inversion' :=
+  match goal with
+  | [ H: absstate_match_rel (AbsAnd (BaseState ?s ?Meta) ?Q) ?fenv ?stk |- _ ] =>
+      invs H;
+      (* idtac "match 1"; *)
+      match goal with
+      | [ META: absstate_match_rel (BaseState s Meta) fenv stk |- _ ] =>
+          invs META;
+          (* idtac "match 1.5"; *)
+          match goal with
+          | [ H': meta_match_rel Meta fenv stk |- _ ] =>
+              invs H';
+              (* idtac "match 2"; *)
+             match goal with
+              | [ H'' : eval_prop_rel ?func ?LogProp |- _ ] =>
+                  (* idtac "match 3"; *)
+                  invs H''
+                        
+              end;
+              match goal with
+              | [ H''' : prop_rel ?func ?LogProp |- _ ] =>
+                  (* idtac "match 4"; *)
+                  (* idtac H'''; *)
+                  invs H''';
+                  try (match goal with
+                       | [ H''': prop_rel func LogProp,
+                           H2 : prop_rel ?func2 ?LogProp2 |- _ ] =>
+                      (* idtac "match 5"; *)
+                      (* idtac H2; *)
+                      invs H2
+                       end)
+                  
+              end
+          end
+      end
+  end;
+  match goal with
+  | [ H : absstate_well_formed (BaseState ?s ?Meta) |- _ ] =>
+      invs H;
+      match goal with
+      | [ H' : mv_well_formed Meta |- _ ] =>
+          invs H'
+      | [ |- _ ] =>
+          idtac "no mv_well_formed"
+      end
+  | [ |- _ ] =>
+      idtac "no absstate_well_formed"
+  end;
+  match goal with
+  | [ H : meta_stk_size_inc ?inc (_ ?l1) (_ ?l2) |- _ ] =>
+      invs H;
+      match goal with
+      | [ H' : transformed_prop_exprs (?func inc) l1 l2 |- _ ] =>
+          invs H'
+      end
+  end.
+
+Ltac smart_wf_helper :=
+  match goal with
+  | [ H : prop_rel bexp_well_formed ?p |- _ ] =>
+      invs H
+  | [ H: prop_rel aexp_well_formed ?p |- _ ] =>
+      invs H
+  end.
+
+
+Ltac smart_expr_stack_increase_preserves_eval' inc_rel pure_rel wf_rel stack_sem :=
+  match goal with
+  | [ H1 : inc_rel 1 ?a ?a',
+        H2 : pure_rel ?a' ?fenv,
+          
+          H3: wf_rel ?a,
+      H4 : stack_sem ?a' ?fenv (?v :: ?stk) (?v :: ?stk, ?aval) |-
+        stack_sem ?a ?fenv ?stk (?stk, ?val) ] =>
+      let INC := fresh "INC" in
+      pose proof (INC := H1);
+      match inc_rel with
+      | bexp_stk_size_inc_rel =>
+          (eapply bexp_size_inc_preserves_purity' in INC ; [ | eassumption .. ]);
+          eapply bexp_stack_increase_preserves_eval'; eassumption
+      | aexp_stk_size_inc_rel =>
+          (eapply aexp_size_inc_preserves_purity' in INC; [ | eassumption .. ]);
+          eapply aexp_stack_increase_preserves_eval'; eassumption
+      end
+  end.
+
+Ltac smart_bexp_stack_increase_preserves_eval' :=
+  (smart_expr_stack_increase_preserves_eval'
+     aexp_stk_size_inc_rel
+     aexp_stack_pure_rel
+     aexp_well_formed
+     aexp_stack_sem)
+  ||
+  (smart_expr_stack_increase_preserves_eval'
+     bexp_stk_size_inc_rel
+     bexp_stack_pure_rel
+     bexp_well_formed
+     bexp_stack_sem).
+
+Ltac match_logic_prop H p1 m tac :=
+  match m with
+  (* | NegProp _ _ p1 => *)
+      (* invs H; tac *)
+  | AndProp _ _ p1 _ =>
+      invs H;
+      tac
+  | OrProp _ _ p1 _ =>
+      invs H; tac
+  | AndProp _ _ _ p1 =>
+      invs H; tac
+  | OrProp _ _ _ p1 =>
+      invs H; tac
+  end.
+
+Ltac smart_transformed_prop_exprs inc_rel p1 tac tac1 tac2 :=
+  match goal with
+  | [ H : transformed_prop_exprs (inc_rel 1) p1 ?p1' |- _ ] =>
+      tac1 H
+  | [ H : transformed_prop_exprs (inc_rel 1) ?p1' p1 |- _ ] =>
+      tac2 H
+  | [ H : transformed_prop_exprs (inc_rel 1) ?m ?n |- _ ] =>
+      match_logic_prop H p1 m tac
+  end.
+
+
+Ltac smart_logic_stack_increase_preserves_eval'_bool_prop_wf prop_rel_prop p1 tac tac1 :=
+   match goal with
+   | [ H : prop_rel prop_rel_prop p1 |- _ ] =>
+       tac1 H
+   | [ H : prop_rel prop_rel_prop ?m |- _ ] =>
+       match_logic_prop H p1 m tac
+   end.
+
+Ltac smart_logic_stack_increase_preserves_eval' :=
+  match goal with
+  | [ |- transformed_prop_exprs (?inc_rel 1) ?p1 ?[?p'] ] =>
+      smart_transformed_prop_exprs inc_rel p1 ltac:(eassumption) ltac:(fun H => eapply H) ltac:(idtac)
+  | [ |- bool_prop_wf ?p1 ] =>
+      unfold bool_prop_wf;
+      smart_logic_stack_increase_preserves_eval'_bool_prop_wf bexp_well_formed p1 ltac:(eassumption) ltac:(fun H => eapply H)
+  | [ |- nat_prop_wf ?p1 ] =>
+      unfold nat_prop_wf;
+      smart_logic_stack_increase_preserves_eval'_bool_prop_wf aexp_well_formed p1 ltac:(eassumption) ltac:(fun H => eapply H)
+  | [ |- prop_rel (fun boolexpr : ?expr_type => ?pure_rel boolexpr ?fenv) ?p1 ] =>
+      match pure_rel with
+      | bexp_stack_pure_rel =>
+          smart_pure_helper'
+      | aexp_stack_pure_rel =>
+          smart_pure_helper'
+      end
+  | [ |- _ ] =>
+      eassumption
+  end.
+
+
+
+
+
+                              (* bool_prop_wf p1 *)
+(* goal 3 (ID 24153) is: *)
+(* *)
+
+Ltac small_smart_pure_helper inc_rel tac1 tac3 :=
+  match inc_rel with
+  | bexp_stk_size_inc_rel =>
+      eapply bool_prop_rel_prop_stk_inc_preserves_purity';
+      [
+        tac1 (* for the pure_rel p' case *)
+      | smart_wf_helper
+      | tac3 ]
+  | aexp_stk_size_inc_rel =>
+      eapply nat_prop_rel_prop_stk_inc_preserves_purity';
+      [
+        tac1
+      | smart_wf_helper
+      | tac3 ]
+  end.
+
+Lemma triple_stk_pop :
+  forall P' P Q fenv,
+    state_stk_size_inc 1 P' P ->
+    {{{(AbsAnd P Q)}}} Pop_Stk {{{ P' }}} @ fenv.
+Proof.
+  unfold triple_stk.
+  induction P'; intros P Q fenv INC stk stk' IMP MATCH.
+  - invs MATCH. invs IMP. invs INC.
+    invs H3.
+    + invs H1.
+      econstructor; [ | invs H6; invs H8 ]; econstructor.
+      * eapply logic_stack_increase_preserves_eval'. eassumption. eassumption. eauto using bool_prop_rel_prop_stk_inc_preserves_purity'.
+        eapply logic_stack_increase_preserves_eval; try eassumption.
+        eauto using bool_prop_rel_prop_stk_inc_preserves_purity'.
+        eapply logic_stack_increase_preserves_eval'; eauto.
+        eauto using bool_prop_rel_prop_stk_inc_preserves_purity'.
+      * eauto using bool_prop_rel_prop_stk_inc_preserves_purity'.
+      * eapply nat_logic_stack_increase_preserves_eval'; eauto.
+        eauto using nat_prop_rel_prop_stk_inc_preserves_purity'.
+      * eauto using nat_prop_rel_prop_stk_inc_preserves_purity'.
+    + econstructor.
+      * invs H1. invs H2. simpl in H0. econstructor. lia.
+      * destruct m; invs H6; invs H1; invs H10; econstructor.
+        --  eapply logic_stack_increase_preserves_eval'; eauto using bool_prop_rel_prop_stk_inc_preserves_purity, bool_prop_rel_prop_stk_inc_preserves_purity'.
+        -- 
+           eapply bool_prop_rel_prop_stk_inc_preserves_purity'; eassumption.
+        -- eapply nat_logic_stack_increase_preserves_eval'; eauto using arith_prop_rel_pure_help.
+           eapply nat_prop_rel_prop_stk_inc_preserves_purity'; eauto.
+        -- eapply nat_prop_rel_prop_stk_inc_preserves_purity'; eauto.
+  - invs INC. invs MATCH. invs H1. econstructor; eauto.
+    eapply IHP'2; eauto.
+    econstructor; eauto.
+  - invs INC. invs IMP. invs MATCH.
+    invs H1.
+    + econstructor; eauto. eapply IHP'1; eauto. econstructor; eauto.
+    + eapply RelAbsOrRight. eapply IHP'2; eauto. econstructor; eauto.
+Qed.
+
+
+Local Open Scope stack_scope.
+
+Lemma triple_stk_seq :
+  forall P Q R i1 i2 fenv,
+    {{{P}}} i1 {{{Q}}} @ fenv ->
+    {{{Q}}} i2 {{{R}}} @ fenv ->
+    {{{P}}} i1 ;;; i2 {{{R}}} @ fenv.
+Proof.
+  unfold triple_stk; intros.
+  invs H1.
+  apply H in H5.
+  - apply H0 in H9.
+    + assumption.
+    + assumption.
+  - assumption.
+Qed.
+
+(* Print Visibility. *)
+
+Lemma triple_stk_ifthenelse :
+  forall P Q b i1 i2 fenv,
+    bexp_stack_pure_rel b fenv ->
+    {{{(atruestk b P)}}} i1 {{{Q}}} @ fenv ->
+    {{{(afalsestk b P)}}} i2 {{{Q}}} @ fenv ->
+    {{{P}}} ifs b thens i1 elses i2 dones {{{Q}}} @ fenv.
+Proof.
+  unfold triple_stk, atruestk, afalsestk, bexp_stack_pure; intros.
+  invs H2.
+  - apply H0 in H11.
+    + assumption.
+    + pose proof (PURE := H).
+      eapply (bexp_stack_pure_implication) in PURE.
+      unfold bexp_stack_pure in PURE.
+      (* pose proof (DET := bexp_stack_sem_det). *)
+      (* specialize (DET fenv stk b (stk'0, true) (stk, true)). *)
+      pose proof (H12 := H10).
+      apply PURE in H10.
+      (* invs H10. *)
+      subst.
+      econstructor.
+      * assumption.
+      * econstructor.
+        -- econstructor.
+        -- econstructor.
+           econstructor.
+           eassumption.
+           reflexivity.
+           econstructor.
+           eassumption.
+  - apply H1 in H11.
+    + assumption.
+    + pose proof (PURE := H).
+      eapply (bexp_stack_pure_implication) in H.
+      specialize (H stk stk'0 false).
+      (* apply bexp_stack_sem_det with (fenv := fenv) (stk := stk) (b := b) (stk'v := (stk'0, false)) (stk''v := (stk, false)) in H10. *)
+      pose proof (H12 := H10).
+      apply H in H10; subst.
+      econstructor.
+      * assumption.
+      * econstructor.
+        -- econstructor.
+        -- econstructor.
+           ++ econstructor.
+              ** eassumption.
+              ** reflexivity.
+           ++ econstructor. assumption.
+Qed.
+
+(* Print Visibility. *)
+
+Lemma triple_stk_while :
+  forall P b l fenv,
+    bexp_stack_pure_rel b fenv ->
+    {{{atruestk b P}}} l {{{P}}} @ fenv ->
+    {{{P}}} whiles b loops l dones {{{afalsestk b P}}} @ fenv.
+Proof.
+  unfold triple_stk, afalsestk, bexp_stack_pure; intros P b l fenv PURE TRUE_LOOP stk stk' SEM.
+  dependent induction SEM; intros.
+  - pose proof (PURE' := PURE).
+    eapply bexp_stack_pure_implication in PURE.
+    specialize (PURE stk stk' false).
+    pose proof (H1 := H).
+    apply PURE in H. subst.
+
+    econstructor; [assumption | ].
+    econstructor; [econstructor | ].
+    econstructor; [ |  econstructor; eassumption].
+    econstructor; [eassumption | reflexivity].
+  - pose proof (PURE' := PURE).
+    eapply bexp_stack_pure_implication in PURE'.
+    specialize (PURE' stk stk1 true).
+
+    pose proof (H1 := H).
+    apply PURE' in H.
+    subst.
+    eapply IHSEM2; eauto.
+    specialize (TRUE_LOOP stk1 stk2).
+    apply TRUE_LOOP in SEM1.
+    + assumption.
+    + unfold atruestk. econstructor; [assumption |].
+      econstructor; [econstructor|].
+      econstructor. econstructor.
+      * eassumption.
+      * reflexivity.
+      * econstructor; eassumption.
+Qed.
+
+Lemma triple_stk_consequence :
+  forall P Q P' Q' i fenv,
+    {{{P}}} i {{{Q}}} @ fenv ->
+    (P' --->>> P) fenv ->
+    (Q --->>> Q') fenv ->
+    {{{P'}}} i {{{Q'}}} @ fenv.
+Proof.
+  unfold triple_stk, aimpstk; intros. eauto.
+Qed.
+
+Lemma triple_stk_consequence_pre : 
+  forall P Q P' c n fact_env fenv,
+    fact_env_valid fact_env fenv ->
+    triple_stk P c Q fenv ->
+    List.nth_error fact_env n = Some (P', P) ->
+    triple_stk P' c Q fenv.
+Proof.
+  unfold triple_stk, fact_env_valid, aimpstk; intros.
+  pose proof nth_error_In fact_env n H1. 
+  specialize (H P' P H4 stk H3).
+  apply (H0 stk stk' H2 H).
+Qed.
+
+Lemma triple_stk_consequence_post : 
+  forall P Q Q' c n fact_env fenv,
+    fact_env_valid fact_env fenv ->
+    triple_stk P c Q fenv ->
+    List.nth_error fact_env n = Some (Q, Q') ->
+    triple_stk P c Q' fenv.
+Proof. 
+  unfold triple_stk, fact_env_valid, aimpstk; intros.
+  pose proof nth_error_In fact_env n H1. 
+  specialize (H0 stk stk' H2 H3).
+  apply (H Q Q' H4 stk' H0).
+Qed. 
+
+
+
+(* | hl_stk_consequence_pre :
+  forall P Q P' c n fact_env fenv,
+    fact_env_valid fact_env fenv ->
+    hl_stk P c Q fact_env fenv ->
+    List.nth_error fact_env n = Some (P', P) ->
+    hl_stk P' c Q fact_env fenv
+| hl_stk_consequence_post :
+  forall P Q Q' c n fact_env fenv,
+    fact_env_valid fact_env fenv ->
+    hl_stk P c Q fact_env fenv ->
+    List.nth_error fact_env n = Some (Q, Q') ->
+    hl_stk P c Q' fact_env fenv.  *)
+
+Theorem Hoare_stk_sound :
+  forall P i Q fact_env fenv,
+    hl_stk P i Q fact_env fenv ->
+    {{{P}}} i {{{Q}}} @ fenv.
+Proof.
+  induction 1;
+    eauto using triple_stk_skip, triple_stk_assign, triple_stk_seq, triple_stk_ifthenelse, triple_stk_while, triple_stk_consequence_pre, triple_stk_consequence_post, triple_stk_push, triple_stk_pop, triple_stk_consequence.
+Qed.
+
+  
+
+
+      
+
+
+(* End Generalized. *)

@@ -1,0 +1,5 @@
+(coq.theory
+ (name Hoarechecker)
+ (package hoarechecker)
+ (plugins hoarechecker.plugin)
+ (theories Imp_LangTrick))

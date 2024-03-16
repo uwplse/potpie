@@ -1,0 +1,7 @@
+(coq.theory
+ (name Imp_LangTrick)
+ (package hoarechecker)
+ ; (plugins hoarechecker.plugin) ; uncomment once we're actuallly using the plugin, otherwise dune will recompile everything every time we change the plugin
+ )
+
+(include_subdirs qualified)

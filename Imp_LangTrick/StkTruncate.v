@@ -1,0 +1,9 @@
+From Coq Require Import String List Peano Arith Program.Equality Nat
+Psatz Arith.PeanoNat Program.Equality.
+
+From Imp_LangTrick Require Import StackLogic Imp_LangLogHoare Imp_LangTrickLanguage EnvToStack StackLanguage Imp_LangLogProp LogicProp StackLangTheorems StackLogicBase.
+From Imp_LangTrick Require Import LogicTranslationBackwards StackLogicBase TranslationPure LogicTranslationAdequate LogicTrans.
+From Imp_LangTrick Require Export ProofSubstitution ImpVarMapTheorems Imp_LangLogSubstAdequate.
+From Imp_LangTrick Require Import Imp_LangImpHigherOrderRel Imp_LangImpHigherOrderRelTheorems CompilerCorrect StackFrame1
+StackExtensionDeterministic FunctionWellFormed LogicTranslationBase ParamsWellFormed
+Imp_LangLogSubst.

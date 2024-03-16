@@ -1,0 +1,15 @@
+(library
+ (name hoarechecker_plugin)
+ (public_name hoarechecker.plugin)
+ (libraries
+  coq-core.engine
+  coq-core.interp
+  coq-core.printing
+  coq-core.vernac
+  coq-core.kernel
+  coq-core.lib
+  coq-core.library)
+ (flags -rectypes))
+
+(coq.pp
+ (modules g_hoarechecker))

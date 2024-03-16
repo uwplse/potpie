@@ -1,0 +1,24 @@
+src/META.hoarechecker
+-R theories Hoarechecker
+-I src
+# -Q ../Imp_LangTrick Imp_LangTrick
+
+theories/Loader.v
+theories/Demo.v
+
+
+# theories/Loader.v
+# theories/Demo.v
+
+src/collections.mli
+src/collections.ml
+src/stateutils.mli
+src/stateutils.ml
+src/termutils.mli
+src/termutils.ml
+src/induction.mli
+src/induction.ml
+src/checker.mli
+src/checker.ml
+src/g_hoarechecker.mlg
+src/hoarechecker_plugin.mlpack

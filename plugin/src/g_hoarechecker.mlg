@@ -1,0 +1,100 @@
+DECLARE PLUGIN "hoarechecker.plugin"
+
+{
+
+(*
+ * Some of these imports may be unused since this is inherited from the
+ * plugin tutorial for the Proof Automation class. Will strip this down
+ * and revamp as needed; for now just setting up infrastructure.
+ *)
+open Stdarg
+open Termutils
+open Checker
+(*
+open Exercise
+open Stateutils
+ *)
+
+}
+
+
+(*
+ * Proof checking command (or whatever we need) will go here.
+ * If we want, we can spit out a certificate in Coq by inhabiting the right
+ * inductive type. I'm going to add a placeholder for the name of that
+ * certificate for now.
+ *)
+VERNAC COMMAND EXTEND CheckProof CLASSIFIED AS SIDEFF
+| [ "Certify" constr(p) constr(f) constr(fact_env) constr(vf) constr(funcs) "as" ident(i) ] ->
+{
+  let sigma, env = global_env () in (* get environment *) 
+  let sigma, proof = internalize env p sigma in (* proof tree *)
+  (* let () = print_message env proof sigma in *)
+  let sigma, fenv = internalize env f sigma in
+  let sigma, facts = internalize env fact_env sigma in
+  let sigma, valid_facts = internalize env vf sigma in
+  let sigma, funcs' = internalize env funcs sigma in
+  let sigma, certificate = if CoqOptions.is_checker_certify () then
+      check_stack_proof env proof fenv facts valid_facts sigma
+    else
+      
+      (sigma, None) in
+  let () = Feedback.msg_notice (Pp.str "Done with certificate generation") in
+  let sigma, certificate_typ = sigma, None in
+   (* if CoqOptions.is_checker_certify () then
+      (match certificate with
+       |  Some t -> let sigma, typ = Typing.type_of ~refresh:true env sigma t in
+         sigma, Some (EConstr.to_constr sigma typ)
+       | None -> sigma, None)
+      else (sigma, None) in*)
+  let () = Feedback.msg_notice (Pp.str "Done with typing inference") in
+  let sigma, checked =
+    (match certificate with
+     | Some _ -> (sigma, CoqCoreInductives.inject_bool_into_coq_bool true)
+     | None -> 
+      BoolChecker.check_stack_proof env proof fenv facts valid_facts funcs' sigma)
+  in (* check *)
+  (* let () = print_endline "blahblahblah" in *)
+  (match certificate_typ with
+   | Some ct ->
+     ignore (Defutils.define ~typ:ct i sigma (match certificate with
+       | Some c -> c
+       | None -> checked) false)
+   | None -> 
+     ignore (Defutils.define i sigma (match certificate with
+         | Some c -> c
+         | None -> checked)
+       false)) (* define certificate *)
+}
+(*| [ "CheckTree" constr(p) constr(fenv) constr(fact_env) constr(vf) constr(funcs) ] ->
+
+{
+  let sigma, env = global_env () in
+  let sigma, proof = internalize env p sigma in
+  let sigma, fenv' = internalize env fenv sigma in
+  let sigma, facts = internalize env fact_env sigma in
+  let sigma, valid_facts = internalize env vf sigma in
+  let sigma, funcs' = internalize env funcs sigma in
+  BoolChecker.check_stack_proof env proof fenv' facts valid_facts funcs' sigma
+  
+  }*)
+| [ "MyDebug" constr(p) ] ->
+{
+  let sigma, env = global_env () in
+  let sigma, t' = (internalize env p sigma) in
+  let t = unwrap_definition env t' sigma in
+  (* let () = print_endline (Printingutils.print_kinds env t sigma) in *)
+  print_endline (Printingutils.print_kinds env t sigma)
+  (* print_endline (Pp.db_string_of_pp (print env t sigma)) *)
+}
+END
+
+
+(* Configure with additional information *)
+VERNAC COMMAND EXTEND ConfigureHoareChecker CLASSIFIED AS SIDEFF
+| [ "Configure" "HoareChecker" "{" "opaque" ne_reference_list(opaques) "}" ] ->
+   {
+     let sigma, env = global_env () in
+     add_opaques opaques sigma
+   }
+END
