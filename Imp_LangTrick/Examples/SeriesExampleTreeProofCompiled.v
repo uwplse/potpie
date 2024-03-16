@@ -10,63 +10,8 @@ From Imp_LangTrick Require Import SeriesHelperCompilation.
 From Imp_LangTrick.Tactics Require Import MiscTactics.
 From Imp_LangTrick Require Import StackFrameReflection StackPurestBaseReflection HelperWrappers.
 Local Open Scope string_scope.
+From Imp_LangTrick Require Export StackExampleHelpers.
 
-Lemma target_frac_add_denominator_wrapper : 
-  forall stk a1 a2 n1 n2, 
-  aexp_stack_sem a1 TargetProd.fenv stk  (stk, n1) ->
-  aexp_stack_sem a2 TargetProd.fenv stk  (stk, n2) ->
-  aexp_stack_sem (App_Stk "frac_add_denominator"%string (a1::a2::nil)) TargetProd.fenv stk (stk, (n1 * n2)).
-Proof. 
-intros.  
-econstructor; simpl; try reflexivity; unfold TargetProd.fenv; simpl.
-econstructor; try eassumption.
-econstructor; try eassumption.
-econstructor. simpl. econstructor. econstructor.
-reflexivity. 
-econstructor. unfold stack_mapping. simpl. reflexivity.
-unfold stack_mapping. simpl. lia.
-eapply target_mult_aexp_wrapper.
-econstructor; simpl; simpl; try lia; try reflexivity.        
-econstructor; simpl; simpl; try lia; try reflexivity.
-econstructor. reflexivity.  
-unfold stack_mapping. simpl. 
-econstructor; simpl; simpl; try lia; try reflexivity.
-repeat econstructor.
-Qed.          
-
-Lemma target_frac_add_numerator_wrapper : 
-  forall stk a1 a2 a3 a4 n1 n2 n3 n4, 
-  aexp_stack_sem a1 TargetProd.fenv stk  (stk, n1) ->
-  aexp_stack_sem a2 TargetProd.fenv stk  (stk, n2) ->
-  aexp_stack_sem a3 TargetProd.fenv stk  (stk, n3) ->
-  aexp_stack_sem a4 TargetProd.fenv stk  (stk, n4) ->
-  aexp_stack_sem (App_Stk "frac_add_numerator"%string (a1::a2::a3::a4::nil)) TargetProd.fenv stk (stk, ((n1 * n4) + (n2 * n3))). 
-Proof.
-intros.
-econstructor; simpl; try reflexivity; unfold TargetProd.fenv; simpl.
-econstructor; try eassumption.
-econstructor; try eassumption.
-econstructor; try eassumption.
-econstructor; try eassumption.
-econstructor. simpl. econstructor. econstructor.
-reflexivity.
-econstructor. unfold stack_mapping. simpl. reflexivity.
-unfold stack_mapping. simpl. lia.
-econstructor.
-eapply target_mult_aexp_wrapper.
-econstructor; simpl; simpl; try lia; try reflexivity.        
-econstructor; simpl; simpl; try lia; try reflexivity.
-eapply target_mult_aexp_wrapper.
-econstructor; simpl; simpl; try lia; try reflexivity.        
-econstructor; simpl; simpl; try lia; try reflexivity.
-unfold stack_mapping. simpl.
-econstructor. exists.
-unfold stack_mapping. simpl.
-econstructor; simpl; try lia; try reflexivity.
-assert (n3 * n2 = n2 * n3) as eq by lia; rewrite eq.
-reflexivity.
-repeat econstructor.
-Qed.  
 
 Module SeriesProofCompilationPluginOnly(S: SeriesProgramInputs).
   Module SeriesSourceProgram <: ProofCompMod.SourceProgramType.
@@ -102,38 +47,6 @@ Module SeriesProofCompilationPluginOnly(S: SeriesProgramInputs).
   Module TARGET := SeriesTargetProgram.
 
   
-
-  Lemma pre_sound : CAPC.SC.transrelation_sound SOURCE.precond SOURCE.fenv TARGET.fenv SOURCE.idents SOURCE.num_args.
-  Proof.
-    econstructor. intros. CAPC.PC.unfold_cc_sc; split; intros.
-    - simpl. meta_smash.
-      + unfold SOURCE.precond in H1. unfold SOURCE.idents in H0. unfold construct_trans in H0. simpl in H0.
-        destruct_stks stk.
-        simpl. lia.
-      + unfold SOURCE.precond in H1. unfold series_precond in H1.
-        destruct_stks stk.
-        invc H1. invc H4. invc H8. invc H2. invc H3. invc H4. invc H2. invc H8. invc H9. invc H10. destruct H11 as (A & B & C & D & E & F).
-        intuition.
-      + econstructor; prove_exp_stack_pure_rel.
-      + destruct_stks stk. simpl. lia.
-      + repeat split; reflexivity.
-      + econstructor; prove_exp_stack_pure_rel.
-    - simpl in H1. invc H1. invc H4. invc H8. invc H7. invc H2. invc H10. invc H2. invc H5. invc H11. invc H12. invc H13. invc H15. invc H16. invc H17. unfold SOURCE.precond. unfold series_precond. econstructor; econstructor; econstructor; econstructor; meta_smash.
-      eassumption. intuition.
-  Qed.
-  
-  Lemma post_sound : CAPC.SC.transrelation_sound SOURCE.postcond SOURCE.fenv TARGET.fenv SOURCE.idents SOURCE.num_args.
-  Proof.
-    unfold SOURCE.postcond. unfold series_postcond. unfold SOURCE.idents. unfold SOURCE.program. unfold series_calculation_program. simpl.
-    unfold construct_trans. simpl. econstructor.
-    intros. simpl. unfold LTtoLEQProofCompilable.SC.CC.compile_aexp. simpl. destruct_stks stk.
-    split; intros.
-    - invc H1. invc H3. invc H2. invc H6. invc H7. meta_smash.
-      + lia.
-      + econstructor; prove_exp_stack_pure_rel.
-    - invc H1. invc H4. invc H7. invc H3. invc H8. invc H9. simpl in H12. invc H12. simpl in H14. invc H14.
-      econstructor. econstructor. econstructor; meta_smash.
-  Qed.
 
   Ltac aexp_stack_sem_same :=
     match goal with

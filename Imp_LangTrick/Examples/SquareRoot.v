@@ -5,7 +5,7 @@ From Imp_LangTrick Require Import ImpExampleHelpers ProofCompAutoAnother.
 From Imp_LangTrick Require Import StackLangTheorems Imp_LangLogProp LogicProp.
 From Imp_LangTrick Require Import Imp_LangLogHoare ProofCompMod SeriesExample ProofCompilableCodeCompiler EnvToStackLTtoLEQ ProofCompCodeCompAgnosticMod NotTerribleBImpLangInversion StackLanguage SeriesHelperCompilation AimpWfAndCheckProofAuto HelperFenvWF.
 
-From Imp_LangTrick Require Export SquareRootCore SquareRootTreeCompiled.
+From Imp_LangTrick Require Export SquareRootCore SquareRootTreeCompiled SquareRootTreeCorrect.
 
 From Imp_LangTrick.Tactics Require Import SemanTactics MiscTactics.
 
@@ -18,10 +18,11 @@ Require Import FunctionWellFormed TranslationPure ParamsWellFormed ProofCompiler
   
 
 Module SquareRootProofCompilation (S: SqrtProgramInputs).
-  Module SQTPC := SquareRootTreeProofCompilation(S).
+  Module SQTPC := SquareRootTreeCorrect(S).
   Include SQTPC.
   Module ProofCompileSquareRoot <: ProgramProofCompilationType.
-    Include SQTPC.TreeProofCompileSquareRoot.
+    Include SQTPC.
+    (* Include SQTPC.TreeProofCompileSquareRoot. *)
     
     Lemma fact_cert : Imp_LangLogHoare.fact_env_valid SOURCE.facts SOURCE.fenv.
     Proof.
@@ -286,108 +287,6 @@ Module SquareRootProofCompilation (S: SqrtProgramInputs).
         destruct n. simpl in H3. invs H3. reflexivity.
         destruct n. simpl in H3. discriminate. discriminate.
       - eapply stack_facts_valid.
-        (*unfold StackLogic.fact_env_valid.
-        intros. invs H; simpl in H0.   
-        + invs H0.
-          econstructor. invs H1. invs H4. eassumption.
-          invs H1. invs H4. invs H5.
-          do 4 make_stack_big_enough.
-          invs H1. invs H4.
-          unfold LTtoLEQProofCompilable.SC.CC.compile_bexp, LTtoLEQProofCompilable.SC.CC.compile_aexp in *. cbn [compile_aexp compile_bexp] in *.
-          (* simpl in *. *)
-          invs H7.   
-          invs H16.
-          invs H6.
-          invs H18.
-          invs H22.
-          invs H26.
-          assert (aexp_stack_sem
-                    ("mult" @s
-                            ("mult" @s (Var_Stk 1) :: (Var_Stk 1) :: nil)%aexp_stack
-                            :: ("mult" @s (Const_Stk SqrtSource.b) :: (Const_Stk SqrtSource.epsilon_n) :: nil)%aexp_stack
-                            :: nil) TARGET.fenv (n :: n0 :: n1 :: n2 :: stk) (
-                      (n :: n0 :: n1 :: n2 :: stk), ((n * n) * (SqrtSource.b * SqrtSource.epsilon_n)))) as oobn.
-          { unfold TARGET.fenv. unfold SqrtTargetInputs.target_fenv. 
-            eapply target_mult_aexp_wrapper.  
-            eapply target_mult_aexp_wrapper.
-            econstructor; simpl; try lia; try reflexivity. 
-            econstructor; simpl; try lia; try reflexivity.
-            eapply target_mult_aexp_wrapper.
-            econstructor.
-            econstructor.
-          }
-          assert ((stk'0, n3) = 
-                    (n :: n0 :: n1 :: n2 :: stk,
-                      n * n * (SqrtSource.b * SqrtSource.epsilon_n))).
-          {
-            eapply aexp_stack_sem_det; eassumption.
-          }
-          invs H2; clear H2.
-          assert (aexp_stack_sem
-                    ("mult" @s
-                            ("mult" @s (Var_Stk 4) :: (Var_Stk 4) :: nil)%aexp_stack
-                            :: ("mult" @s (Const_Stk SqrtSource.b) :: (Const_Stk SqrtSource.epsilon_d) :: nil)%aexp_stack
-                            :: nil) TARGET.fenv (n :: n0 :: n1 :: n2 :: stk) (
-                      (n :: n0 :: n1 :: n2 :: stk), ((n2 * n2) * (SqrtSource.b * SqrtSource.epsilon_d)))) as ffbd.
-          { eapply target_mult_aexp_wrapper.  
-            eapply target_mult_aexp_wrapper.
-            econstructor; simpl; try lia; try reflexivity. 
-            econstructor; simpl; try lia; try reflexivity.
-            eapply target_mult_aexp_wrapper.
-            econstructor.
-            econstructor.
-          }
-          assert ((stk1, n5) = (n :: n0 :: n1 :: n2 :: stk,
-                                 n2 * n2 * (SqrtSource.b * SqrtSource.epsilon_d))).
-          { eapply aexp_stack_sem_det; eassumption. }
-          
-          invs H2; clear H2.
-          assert (aexp_stack_sem
-                    ("mult" @s
-                            ("mult" @s (Var_Stk 1) :: (Var_Stk 1) :: nil)%aexp_stack
-                            :: ("mult" @s (Const_Stk SqrtSource.a) :: (Const_Stk SqrtSource.epsilon_d) :: nil)%aexp_stack
-                            :: nil) TARGET.fenv (n :: n0 :: n1 :: n2 :: stk) (
-                      (n :: n0 :: n1 :: n2 :: stk), ((n * n) * (SqrtSource.a * SqrtSource.epsilon_d)))) as ooad.
-          { eapply target_mult_aexp_wrapper.  
-            eapply target_mult_aexp_wrapper.
-            meta_smash.
-            meta_smash.
-            eapply target_mult_aexp_wrapper; meta_smash.
-          }
-          assert ((stk', n6) = (n :: n0 :: n1 :: n2 :: stk,
-                                 n * n * (SqrtSource.a * SqrtSource.epsilon_d))) by (eapply aexp_stack_sem_det; eassumption).
-          invs H2; clear H2.
-          clear H21 H28 H25 H22.
-          invs H23. 
-          invs H25. 
-          assert ((stk', n3) = 
-                    (n :: n0 :: n1 :: n2 :: stk,
-                      n * n * (SqrtSource.b * SqrtSource.epsilon_n))) by (eapply aexp_stack_sem_det; eassumption).
-          invs H2; clear H2.
-          assert ((stk1, n5) = (n :: n0 :: n1 :: n2 :: stk,
-                                 n * n * (SqrtSource.a * SqrtSource.epsilon_d))) by (eapply aexp_stack_sem_det; eassumption).
-          invs H2; clear H2.
-          assert ((n :: n0 :: n1 :: n2 :: stk, n6) = (n :: n0 :: n1 :: n2 :: stk,
-                                                   n2 * n2 * (SqrtSource.b * SqrtSource.epsilon_d))) by (eapply aexp_stack_sem_det; eassumption).
-          invs H2; clear H2.
-          meta_smash.
-          unfold sqrt_postcond_prop. 
-          clear H21 H28 H22 H25 ooad ffbd oobn H23 H26 H18 H13.
-          symmetry in H24.
-          rewrite Bool.orb_false_iff in H24.
-          destruct H24.
-          rewrite leb_iff_conv in H2.
-          rewrite leb_iff_conv in H13.
-          split; lia.
-          repeat econstructor. 
-        + simpl in *. invs H0.
-          * invs H1. econstructor.
-            invs H2. invs H8. apply H6.
-            meta_smash; econstructor.
-          * invs H1; try contradiction. invs H2.
-            econstructor. invs H3. invs H9. eassumption.
-            meta_smash.
-            econstructor.*)
     Qed.
 
     Lemma aimp_always_wf_proof : aimp_always_wf SOURCE.funcs SOURCE.idents SOURCE.num_args SOURCE.precond SOURCE.program SOURCE.postcond SOURCE.fenv SOURCE.facts SOURCE.hoare_triple.

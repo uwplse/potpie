@@ -104,17 +104,21 @@
 ./Examples/MinProofCompilationExample.v
 ./Examples/ProofCompExamples.v
 ./Examples/ImpExampleHelpers.v
+./Examples/StackExampleHelpers.v
 
 ./Examples/SquareRootCore.v
 ./Examples/SquareRootTreeCompiled.v
+./Examples/SquareRootTreeCorrect.v
 ./Examples/SquareRoot.v
 
 ./Examples/HelperFenvWF.v
 ./Examples/Multiplication.v
 ./Examples/Exponentiation.v
 ./Examples/MultiplicationTreeCompiled.v
+./Examples/MultiplicationTreeCorrect.v
 ./Examples/MultiplicationCompiled.v
 ./Examples/ExponentiationTreeCompiled.v
+./Examples/ExponentiationTreeCorrect.v
 ./Examples/ExponentiationCompiled.v
 ./Examples/MultWrappers.v
 ./Examples/ExpWrappers.v
@@ -124,6 +128,7 @@
 ./Examples/SeriesExample.v
 ./Examples/SeriesExampleProofInputs.v
 ./Examples/SeriesExampleTreeProofCompiled.v
+./Examples/SeriesExampleTreeCorrect.v
 ./Examples/SeriesExampleProofCompiled.v
 ./Examples/SeriesExampleProofCompiledOther.v
 ./Examples/SeriesHelperCompilation.v

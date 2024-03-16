@@ -47,7 +47,9 @@ default_files_sep = {
     "Compiler": {
         "Code": ["CompilerCorrectHelpers.v","CompilerCorrectMoreHelpers.v","FactEnvTranslator.v",],
         "Spec": ["LogicTranslationBase.v","LogicTranslationCompilerAgnostic.v","FactEnvTranslator.v",],
-        "Proof": ["ProofCompilerBase.v","ProofCompilerHelpers.v","ProofCompilerPostHelpers.v","ProofCompCodeCompAgnosticMod.v","ProofCompilerCodeCompAgnostic.v","ProofCompilableCodeCompiler.v","UIPList.v",],
+        "\flowA": ["ProofCompilerBase.v","ProofCompilerHelpers.v","ProofCompilerPostHelpers.v","ProofCompCodeCompAgnosticMod.v","ProofCompilerCodeCompAgnostic.v","ProofCompilableCodeCompiler.v","UIPList.v",],
+        "\flowB": ["HoareTree.v","StkHoareTree.v","StateUpdateAdequacy.v","TreeProofCompiler.v",],
+
     },
     "Instantiations": ["EnvToStackBuggy.v","EnvToStackIncomplete.v","EnvToStackLTtoLEQ.v","EnvToStack.v","BuggyProofCompiler.v","UnprovenCorrectProofCompiler.v","IncompleteProofCompiler.v",],
     "Examples": {
@@ -55,11 +57,13 @@ default_files_sep = {
         "Multiplication": {
             "Core": ["Multiplication", "MultWrappers.v"],
             "Tree": ["MultiplicationTreeCompiled.v"],
+            "TreeC": ["MultiplicationTreeCorrect.v"],
             "CC": ["MultiplicationCompiled.v", "HelperFenvWF.v"],
         },
         "Exponentiation": {
             "Core": ["Exponentiation.v","ExpWrappers.v"],
             "Tree": ["ExponentiationTreeCompiled.v"],
+            "TreeC": ["ExponentiationTreeCorrect.v"],
             "CC": ["ExponentiationCompiled.v"],
         },
         # "Series Helper": {
@@ -71,11 +75,13 @@ default_files_sep = {
         "Series": {
             "Core": ["SeriesExample.v", "SeriesExampleProofInputs.v"],
             "Tree": ["SeriesExampleTreeProofCompiled.v"],
+            "TreeC": ["SeriesExampleTreeCorrect.v"],
             "CC": ["SeriesExampleProofCompiled.v","SeriesExampleProofCompiledOther.v",],
         },
         "Square Root": {
             "Core": ["SquareRootCore.v",],
             "Tree": ["SquareRootTreeCompiled.v"],
+            "TreeC": ["SquareRootTreeCorrect.v"],
             "CC": ["SquareRoot.v"],
         }
             
@@ -83,7 +89,6 @@ default_files_sep = {
     "Automation": ["Imp_LangTrickTactics.v","MiscTactics.v","SemanTactics.v","ZArithTactics.v","TerminatesForSure.v","ReflectionMachinery.v","LogicPropHints.v","Imp_LangLogicHelpers.v","AimpWfAndCheckProofAuto.v","NotTerribleBImpLangInversion.v","ImpHasVariableReflection.v",
                    "FunctionWellFormedReflection.v",
                    "ProofCompAuto.v","ProofCompAutoAnother.v", "StackFrameReflection.v","StackPurestBaseReflection.v","StateUpdateReflection.v"],
-    "Unverified Proof Compiler": ["HoareTree.v","StkHoareTree.v","StateUpdateAdequacy.v","TreeProofCompiler.v",],
     "Ignore": ["rsa_impLang.v","Adequacy.v","BloomFilterArrayProgram.v","HelperWrappers.v","PrimeFactors.v","ProofCompExamples.v"],
     "Other": []
 }
@@ -245,17 +250,19 @@ def add_lines_recursive_version(max_cats, columns_order, args, line_counts
             pass
         pass
     def inner_columns_order(keys):
-        skeys = sorted(filter(lambda x: x not in args.omit, keys))
+        skeys = sorted(filter(lambda x: x not in args.omit, keys) if args.omit else keys)
         if skeys == ["Lang", "Logic", "WF"]:
             return skeys
         elif skeys == ["CC", "Core", "Tree"]:
             return ["Core", "Tree", "CC"]
+        elif skeys == ["CC", "Core", "Tree", "TreeC"]:
+            return ["Core", "Tree", "TreeC", "CC"]
         elif skeys == ["Exponentiation", "Multiplication", "Series", "Square Root"]:
             return ["Multiplication", "Exponentiation", "Series", "Square Root"]
         return keys
     def add_lines(k, line_counts_dict, header_index=0):
         num_added = 0
-        if k in args.omit:
+        if args.omit and k in args.omit:
             return 0
         if isinstance(line_counts_dict[k], dict):
             

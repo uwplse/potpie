@@ -23,7 +23,7 @@ Module SourceProd <: SourceProgramType.
   Definition idents := prod_comp_map.
   Definition num_args := 2.
   Definition funcs := (prod_function :: exp_function :: fraction_addition_denominator_fun :: fraction_addition_numerator_fun :: fraction_subtraction_numerator_fun ::
-  (init_fenv "id") :: nil).
+                                     (init_fenv "id") :: nil).
 End SourceProd.
 
 
@@ -37,11 +37,11 @@ Module TargetProd <: TargetProgramType.
   Definition postcond := CAPC.SC.comp_logic SP.num_args SP.idents SP.postcond.
   Definition fenv: fun_env_stk := (compile_fenv series_fenv).
   Definition facts := map 
-  (fun p => 
-  match p with 
-  |(x, y) => ((CAPC.SC.comp_logic SP.num_args SP.idents x), (CAPC.SC.comp_logic SP.num_args SP.idents y))
-  end)
-  SP.facts.
+                        (fun p => 
+                           match p with 
+                           |(x, y) => ((CAPC.SC.comp_logic SP.num_args SP.idents x), (CAPC.SC.comp_logic SP.num_args SP.idents y))
+                           end)
+                        SP.facts.
 End TargetProd.
 
 Module CompileProdTreeOnly.
@@ -54,50 +54,67 @@ Module CompileProdTreeOnly.
   Ltac unfold_idents := unfold SOURCE.idents in *; unfold prod_comp_map in *.
 
   
-  Lemma pre_sound : CAPC.SC.transrelation_sound SOURCE.precond SOURCE.fenv TARGET.fenv SOURCE.idents SOURCE.num_args.
-  Proof.
-    unfold_src_tar. constructor. intros. split.
-    - intros. simpl. 
-      inversion H1; subst. inversion H3; subst. 
-      inversion H4; subst. inversion H9; subst. 
-      inversion H8; subst. 
-      econstructor.
-      + inversion H0; subst. simpl. econstructor. simpl. 
-        lia.
-      + inversion H0; subst. econstructor. econstructor;
-        econstructor; try lia.
-        * simpl. lia.  
-        * simpl. apply H11.
-        * simpl. lia.
-        * simpl. apply H6.
-        * repeat econstructor.       
-    - unfold SourceProd.num_args in H. econstructor.
-      inversion H1; subst. inversion H4; subst.
-      inversion H0; subst. inversion H7; subst. 
-      inversion H5; subst. inversion H11; subst.
-      simpl in *.
-      inversion H12; subst. simpl in *.       
-      repeat econstructor; try lia.
-      apply H16. apply H19.    
-  Defined.
 
-  Lemma post_sound : CAPC.SC.transrelation_sound SOURCE.postcond SOURCE.fenv TARGET.fenv SOURCE.idents SOURCE.num_args.
+  Lemma stack_valid_facts :
+    StackLogic.fact_env_valid TARGET.facts TARGET.fenv.
   Proof.
-    unfold_src_tar. unfold compile_fenv. unfold series_fenv. unfold imp_fenv_ify. simpl. constructor; split; intros; simpl. 
-    - invs H0. simpl in H0. invs H1. invs H3. invs H4. invs H9.
-      invs H10. invs H11. simpl. 
-      econstructor. econstructor. simpl. lia.
-      econstructor. econstructor. econstructor; try simpl; try lia. 
-      apply H6. econstructor; try simpl; try lia. apply H8.
-      econstructor. simpl. lia. simpl. lia. simpl. exists. apply H12.
-      repeat econstructor.
-    - invs H0. simpl in H0. invs H1. invs H7. invs H3. invs H11.
-      invs H12. invs H13. simpl in *.
+    unfold StackLogic.fact_env_valid. intros.  
+    unfold TARGET.facts in H. simpl in H.
+    destruct H. 
+    + invs H. econstructor.
+      invs H0. eassumption.
+      invs H0. invs H6. invs H2. econstructor. econstructor. econstructor. eassumption. econstructor. eassumption.
+      econstructor. eassumption. 
       econstructor. econstructor. econstructor.
-      + econstructor. lia. apply H16.
-      + econstructor. lia. apply H19.
-      + econstructor.  exists.
-      + invs H22. apply H14.            
-  Defined.
-
+      unfold product_invariant_prop. simpl. split; lia.
+      repeat econstructor.
+    + invs H.
+      * invs H0. unfold LTtoLEQProofCompilable.SC.CC.compile_aexp in *. simpl in *. clear H.
+        econstructor. invs H. inv H3. 
+        econstructor. invs H. invs H3. invs H8. invs H2. invs H10. 
+        invs H14. invs H16. invs H18.  
+        econstructor; try eassumption. 
+        unfold product_invariant_prop in H11. simpl in H11. 
+        unfold prod_postcondition_prop. destruct H11.
+        invs H6. invs H23. invs H9. invs H24. invs H28. 
+        symmetry in H30. 
+        rewrite leb_iff_conv in H30. 
+        assert (n2 = 0) by lia. rewrite H1 in *.  
+        assert ((stk', 0) = (stk', val1)).
+        eapply aexp_stack_sem_det; try eassumption.
+        invs H21.   
+        lia. 
+        repeat econstructor.
+      * clear H. invs H0. invs H. clear H0 H. econstructor.
+        invs H. invs H2. apply H3. 
+        invs H. invs H2. invs H7. invs H1. invs H9. invs H13. invs H15. invs H17.
+        econstructor. econstructor.
+        econstructor. eassumption. 
+        econstructor. eassumption.
+        econstructor. econstructor. simpl. eassumption.
+        econstructor. econstructor. econstructor.
+        simpl. eassumption.
+        simpl. eassumption.
+        econstructor. unfold product_invariant_prop. simpl.
+        invs H5. invs H21. invs H6. invs H23. 
+        (* invs H26.  *)
+        symmetry in H29.
+        apply leb_complete in H29. 
+        unfold LTtoLEQProofCompilable.SC.CC.compile_aexp in *.
+        simpl in *.
+        assert (stk' = stk).
+        invs H27; reflexivity. rewrite H0 in *. 
+        assert ((stk, n2) = (stk, val1)).
+        eapply aexp_stack_sem_det; try eassumption. 
+        invs H20. 
+        (* invs H30. *)
+        unfold product_invariant_prop in H10. simpl in H10. 
+        destruct H10.
+        split; try lia.
+        invs H27. 
+        assert ((val - (val1 - 1)) = 1 + (val - val1)) by lia.
+        rewrite H0. unfold Nat.add at 2. simpl. lia. 
+        repeat econstructor.
+        contradiction.  
+  Qed.
 End CompileProdTreeOnly.

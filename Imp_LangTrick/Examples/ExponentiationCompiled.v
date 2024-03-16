@@ -8,10 +8,10 @@ From Imp_LangTrick Require Import ProofCompAutoAnother BloomFilterArrayProgram.
 From Imp_LangTrick Require Import LogicProp Imp_LangLogProp Imp_LangLogHoare  ProofCompAuto ProofCompCodeCompAgnosticMod AimpWfAndCheckProofAuto StackLangTheorems Multiplication MultiplicationTreeCompiled HelperFenvWF MultiplicationCompiled.
 Local Open Scope imp_langtrick_scope.
 
-From Imp_LangTrick Require Export ExponentiationTreeCompiled.
+From Imp_LangTrick Require Export ExponentiationTreeCompiled ExponentiationTreeCorrect.
 
 Module CompileExp <: ProgramProofCompilationType.
-  Include CompileExpTreeOnly.
+  Include CompileExpTreeCorrect.
 
   Lemma fact_cert : Imp_LangLogHoare.fact_env_valid SOURCE.facts SOURCE.fenv.
   Proof.
