@@ -6,7 +6,7 @@ partial) specification, we can compile the program, specification, and
 proof that the program meets the specification all at once.
 
 If you're reading this in the included zip file, you can also find our
-code base [on GitHub](https://github.com/uwplse/potpie/tree/v0.3).
+code base [on GitHub](https://github.com/uwplse/potpie/tree/v0.4).
 
 <!-- ## Arxiv link -->
 <!-- TODO -->
@@ -112,16 +112,6 @@ opam install coqide
 Be sure to follow all additional instructions that `opam` may direct
 you to take, such as running `eval $(opam env)` as necessary.
 
-#### Via Coq Platform
-Coq Platform installers for macOS and Windows are available
-[here](https://github.com/coq/platform/releases/tag/2022.01.0). For
-Linux, you can install using
-[snap](https://snapcraft.io/coq-prover). Be sure to use version
-`2022.01/stable`, or install via the command line with
-
-```
-sudo snap install coq-prover --channel=2022.01/stable
-```
 
 ### Actually Building
 In order to build our proof development and the plugin together, we
@@ -143,16 +133,3 @@ find compiled, we include `_CoqProject` files in both the
 Running `make` in the `Imp_LangTrick` directory should still
 work. However, we do not use `make` for the plugin and only really use
 dune.
-
-When you first run `make`, the last few lines that are output should
-look something like:
-
-```
-     : hl_stk AssignSmallCompiled.T.precond AssignSmallCompiled.T.program
-         AssignSmallCompiled.T.postcond AssignSmallCompiled.T.fenv
-Finished transaction in <60-ish> secs (<60-ish>u,<1-ish>s) (successful)
-     = "Eval4"
-     : string
-```
-
-And that's it!
