@@ -29,6 +29,7 @@ def get_args():
     ap.add_argument("--omit", action="append", help="Omit a column or category")
     ap.add_argument("--max-level", type=int, default=-1, help="Specify a maximum depth to make the header row.")
     ap.add_argument("--verbose", "-v", action="store_true", help="Print out extra information")
+    ap.add_argument("--include-ml", action="store_true", help="Include .ml files when calculating LOC")
 
     return ap.parse_args()
 
@@ -43,15 +44,17 @@ default_files_sep = {
         "Logic": ["StackLogic.v","StackLogicBase.v","StackLogicGrammar.v",],
         "WF": ["StackFrame.v","StackFrame1.v","StackFrameBase.v","StackFrameMin.v","StackFrameMinHelpers.v","StackFrameZ.v","StackFrameZTheorems.v","StackPure.v","StackPurest.v","StackPurestBase.v","StackExprWellFormed.v",],
     },
-    "Base Assertions": ["LogicProp.v","LogicPropDec.v","LogicPropTheorems.v",],
+    "Base": {
+        "Props": ["LogicProp.v","LogicPropDec.v","LogicPropTheorems.v",],
+    },
     "Compiler": {
-        "Code": ["CompilerCorrectHelpers.v","CompilerCorrectMoreHelpers.v","FactEnvTranslator.v",],
+        "Code": ["EnvToStack.v", "CompilerCorrectHelpers.v","CompilerCorrectMoreHelpers.v","FactEnvTranslator.v",],
         "Spec": ["LogicTranslationBase.v","LogicTranslationCompilerAgnostic.v","FactEnvTranslator.v",],
-        "\flowA": ["ProofCompilerBase.v","ProofCompilerHelpers.v","ProofCompilerPostHelpers.v","ProofCompCodeCompAgnosticMod.v","ProofCompilerCodeCompAgnostic.v","ProofCompilableCodeCompiler.v","UIPList.v",],
-        "\flowB": ["HoareTree.v","StkHoareTree.v","StateUpdateAdequacy.v","TreeProofCompiler.v",],
+        "\\flowA": ["ProofCompilerBase.v","ProofCompilerHelpers.v","ProofCompilerPostHelpers.v","ProofCompCodeCompAgnosticMod.v","ProofCompilerCodeCompAgnostic.v","ProofCompilableCodeCompiler.v","UIPList.v",],
+        "\\flowB": ["HoareTree.v","StkHoareTree.v","StateUpdateAdequacy.v","TreeProofCompiler.v","CoqCoreInductives.ml","aimpstk.ml", "boolChecker.ml", "checker.ml", "checkerConstants.ml", "collections.ml", "contextutils.ml", "coqOptions.ml", "defutils.ml", "g_hoarechecker.mlg", "induction.ml", "locationutils.ml", "printingutils.ml", "stateutils.ml", "stkhoaretree.ml", "stkvalidtree.ml", "termutils.ml", "utilities.ml"],
 
     },
-    "Instantiations": ["EnvToStackBuggy.v","EnvToStackIncomplete.v","EnvToStackLTtoLEQ.v","EnvToStack.v","BuggyProofCompiler.v","UnprovenCorrectProofCompiler.v","IncompleteProofCompiler.v",],
+    "Instantiations": ["EnvToStackBuggy.v","EnvToStackIncomplete.v","EnvToStackLTtoLEQ.v","BuggyProofCompiler.v","UnprovenCorrectProofCompiler.v","IncompleteProofCompiler.v",],
     "Examples": {
         "Small": ["ExampleLeftShift_Incomplete.v","MaxIncorrectProofCompilationExample.v","MaxUnprovenCorrectProofCompilationExample.v","MinProofCompilationExample.v",],
         "Multiplication": {
@@ -251,6 +254,9 @@ def add_lines_recursive_version(max_cats, columns_order, args, line_counts
         pass
     def inner_columns_order(keys):
         skeys = sorted(filter(lambda x: x not in args.omit, keys) if args.omit else keys)
+        if args.verbose:
+            print(skeys, file=sys.stderr)
+            pass
         if skeys == ["Lang", "Logic", "WF"]:
             return skeys
         elif skeys == ["CC", "Core", "Tree"]:
@@ -259,6 +265,8 @@ def add_lines_recursive_version(max_cats, columns_order, args, line_counts
             return ["Core", "Tree", "TreeC", "CC"]
         elif skeys == ["Exponentiation", "Multiplication", "Series", "Square Root"]:
             return ["Multiplication", "Exponentiation", "Series", "Square Root"]
+        elif skeys == ["Code", "Spec", "\\flowA", "\\flowB"]:
+            return ["Code", "Spec", "\\flowB", "\\flowA"]
         return keys
     def add_lines(k, line_counts_dict, header_index=0):
         num_added = 0
@@ -286,7 +294,7 @@ def add_lines_recursive_version(max_cats, columns_order, args, line_counts
             pass
         elif isinstance(line_counts_dict[k], list):
             loc_obj = line_counts_dict[k][0]
-            if k == "Other":
+            if not args.amp and k == "Other":
                 for i in range(len(headers_lines) - 1):
                     headers_lines[i].append("")
                     pass
@@ -321,16 +329,32 @@ def filter_header_line(line, args):
             skip_next_n -= 1
             continue
         else:
-            matched = re.match(r"\\multicolumn\{([^}]+)\}", l)
+            matched = re.match(r"\\multicolumn\{([^}]+)\}\{([^}]+)\}\{([^}]+)\}", l)
             if matched:
                 num = int(matched.group(1))
+                col = matched.group(2)
+                header = matched.group(3)
                 skip_next_n = num - 1
+                if args.amp and header in ["Imp", "Stack"]:
+                    l = "\\multicolumn{" + str(num) + "}{" + col + "}{" + "\\" + header + "}"
+                    pass
                 pass
             if matched and args.space_nicely:
                 filtered_line.append(l + ("\t" * 2 * skip_next_n))
                 pass
             else:
-                filtered_line.append(l)
+                if args.amp and l == "Automation":
+                    filtered_line.append("\\multirow{2}{*}{Auto}")
+                    pass
+                elif args.amp and l == "Instantiations":
+                    filtered_line.append("\\multirow{2}{*}{Insts.}")
+                    pass
+                elif args.amp and l == "Other":
+                    filtered_line.append("\\multirow{2}{*}{Other}")
+                else:
+                    filtered_line.append(l)
+                    pass
+                    
                 pass
             pass
         pass
@@ -383,11 +407,18 @@ def check_for_args_errors(args):
     pass
 
 
-
+def get_up_to_key(lst, keywords):
+    if len(lst) > 0:
+        if lst[0] in keywords:
+            return [lst[0]]
+        return [lst[0]] + get_up_to_key(lst[1:], keywords)
+        pass
+    return lst
 
 if __name__ == "__main__":
 
     Imp_LangTrick = os.path.join(workdir, "Imp_LangTrick")
+    plugin = os.path.join(workdir, "plugin")
     
     files_to_cats = flip_dict(default_files_sep)
     args = get_args()
@@ -395,7 +426,7 @@ if __name__ == "__main__":
     set_globals(args)
     files = []
     if not args.files:
-        files = [f for f in glob.glob(os.path.join(Imp_LangTrick, "**/*.v"), recursive=True)]
+        files = [f for f in glob.glob(os.path.join(Imp_LangTrick, "**/*.v"), recursive=True)] + [f for f in glob.glob(os.path.join(plugin, "src/*.ml"), recursive=True)]
         pass
     else:
         files = args.files
@@ -412,8 +443,15 @@ if __name__ == "__main__":
     for f in files:
         # print(f)
         bn = os.path.basename(f)
+        if not args.include_ml and bn.endswith(".ml"):
+            continue
         if bn in files_to_cats and (not args.cat or files_to_cats[bn][0] in args.cat):
             keys = files_to_cats[bn]
+            if args.collapse and any(k in args.collapse for k in keys):
+                keys = get_up_to_key(keys, args.collapse)
+            if args.verbose:
+                print(keys, file=sys.stderr)
+                pass
             if (not (args.collapse and any(k in args.collapse for k in keys)) and prints_per_file) or (args.expand and any(k in args.expand for k in keys)):
                 keys += [bn]
                 pass
@@ -421,17 +459,35 @@ if __name__ == "__main__":
             assign_to_dict(cats_to_full_filenames, f, *keys)
             pass
         elif not args.cat:
-            if not args.other and ((prints_per_file and "Other" not in args.collapse) or "Other" in args.expand):
-                if "Other" not in cats_to_full_filenames:
-                    cats_to_full_filenames["Other"] = {}
+            if not args.other:
+                if ((prints_per_file and (args.collapse and "Other" not in args.collapse)) or ( args.expand and "Other" in args.expand)):
+                    if args.verbose:
+                        print("Does 1", file=sys.stderr)
+                        pass
+                    if "Other" not in cats_to_full_filenames:
+                        cats_to_full_filenames["Other"] = {}
+                        pass
+                    cats_to_full_filenames["Other"][bn] = [f]
+                    max_cats = max(max_cats, 2)
                     pass
-                cats_to_full_filenames["Other"][bn] = [f]
-                max_cats = max(max_cats, 2)
-                pass
+                else:
+                    if args.verbose:
+                        print("Does 2", file=sys.stderr)
+                        pass
+                    if "Other" not in cats_to_full_filenames:
+                        cats_to_full_filenames["Other"] = []
+                        pass
+                    cats_to_full_filenames["Other"].append(f)
+                    pass
             else:
+                if args.verbose:
+                    print("Does 3", file=sys.stderr)
+                    pass
                 if "Other" not in cats_to_full_filenames:
                     cats_to_full_filenames["Other"] = []
+                    pass
                 cats_to_full_filenames["Other"].append(f)
+                pass
             pass
         pass
 
@@ -444,7 +500,7 @@ if __name__ == "__main__":
         # print(cats_to_full_filenames)
         recurse_over_dict(cats_to_full_filenames, get_wc(line_counts))
 
-        columns_order = ["Imp", "Stack", "Base Assertions", "Compiler", "Instantiations", "Unverified Proof Compiler", "Examples", "Automation", "Other"]
+        columns_order = ["Imp", "Stack", "Base", "Compiler", "Instantiations", "Unverified Proof Compiler", "Examples", "Automation", "Other"]
         header1_line = []
         header2_line = []
         headers_lines = []

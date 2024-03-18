@@ -5,10 +5,16 @@ long as the miscompilation does not violate a program's (possibly
 partial) specification, we can compile the program, specification, and
 proof that the program meets the specification all at once.
 
+If you're reading this in the included zip file, you can also find our
+code base [on GitHub](https://github.com/uwplse/potpie/tree/v0.3).
+
 <!-- ## Arxiv link -->
 <!-- TODO -->
 
+## Guide to Code Referenced in the Paper
 
+See [GUIDE.md](GUIDE.md) for a list of all the pointers to places in the code we
+referenced in the paper, with links to the associated files.
 
 
 ## Workflows
@@ -80,12 +86,6 @@ Our code is organized into two main folders, `Imp_LangTrick` and
 proof development, and the entirety of the CC proof compilation
 workflow. The Tree workflow spans both directories, with the Coq
 plugin contained in the `plugin` directory.
-
-
-## Guide to Code Referenced in the Paper
-
-See [GUIDE.md](GUIDE.md) for pointers to places in the code we
-referenced in the paper.
 
 ## How to Build
 

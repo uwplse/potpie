@@ -1,68 +1,51 @@
 ## Claims
-1. `stack_pure`: This captures what it means for an expression to
-   preserve the stack: the stack will be the same before and after
-   execution of a stack-preserving expression.
-2. `transform_prop_exprs_adequacy_forward`: The formalization is very
-   similar to the prose description in theorem 4.
-3. `UIP_AbsEnv`: This is just UIP for specifications in our source
-   logic
-4. `UIP_fun_env_refl`: UIP for function environments - there should
-   only ever be one function environment by compilation.
-5. `fun_app_while`: This rule is fully described in the paper.
-6. `inv_fun_app_imp_while`: Note that this is a `Qed` as opposed to a
-	`Defined`. This is for opacity and runtime reasons, as it makes
-	the application of the inversion tactic opaque.
-7. `hl_compile`: This is the program definition for our proof
-	compiler. The type `induction_P` contains all of the
-	well-formedness and termination conditions required for the
-	soundness of the logic translation as in 13.
-8. `log_sound_forward`: This contains the same basic well-formedness
-	constraints as 21, except the `OKfuncs` and `OKparams`
-	assumptions. `OKfuncs` states that all functions in the target
-	language must obey the frame rule, and `OKparams` states that all
-	non-identity functions in the Imp function environment do not
-	invoke more parameters than they take arguments.
-9. `log_sound_backwards`: This contains the same well-formedness
-	constraints as 12, plus a termination condition that states that
-	all language expressions contained within the logical formulae in
-	the Imp logic will always terminate.
-10. `LPModule`: The module for LogicProp instantiations with UIP for
-	types `V` and `A`.
-11. `aexp_compiler_term_assump_backwards`: This contains largely the
-	same constraints as 21, save that it contains the condition
-	`(exists x, a_Dan aD dbenv fenv_d nenv x)`, which ensures that the
-	expression being compiled terminates.
-12. `bexp_compiler_term_assump_backwards`: This contains largely the
-	same constraints as 21, save that it contains the condition
-	`(exists x, b_Dan aD dbenv fenv_d nenv x)`, which ensures that the
-	expression being compiled terminates.
-13. `a_Dan`, `args_Dan`, `b_Dan`, `i_Dan`: The semantics for the Imp
-	language.  This is projected into `Prop`. If `_Dan exp args
-	function_environment variable_environment val` has a proof, then
-	`exp` evaluates to `val` under the corresponding environment.
-14. `aexp_stack_sem`, `bexp_stack_sem`, `imp_stack_sem`,
-	`args_stack_sem`: The semantics for the Stack language. This is
-	project into `Prop`. If `_stack_em exp function_environment stack
-	val` has a proof, then has a proof, then `exp` evaluates to `val`
-	under `stack`.
-15. `compiler_sound_mut_ind`: This is a mutually inductive statement
-	of compiler correctness. Because the mutual induction helper
-	lemmas somewhat obfuscate the intuition behind this theorem in the
-	statement, we encourage the reader to scroll up to line 12, where
-	`P_compiler_sound` is defined and has the assumptions exposed. The
-	well-formedness conditions ensure that functions are called on the
-	correct number of arguments and that the called functions
-	themselves are well-formed (`FUN_WF`), the function environment
-	itself contains only a finite number of non-identity, well-formed
-	functions (`FENV_WF`), the program being compiled has the correct
-	number of argument values in its argument environment
-	(`List.length dbenv = num_args`), and that the mapping from
-	variables actually translates all of the variables contained in
-	the program being compiled (`imp_rec_rel (var_map_wf_wrt_imp
-	idents) i`).
-16. `Hoare_Dan_sound`: This is the statement and proof of soundness of
-	the `hl_Dan` Hoare proof construct for the Imp language with
-	regards to the Hoare triple definition `triple_Dan`.
-17. `Hoare_stk_sound`: This is the statement and proof of soundness of
-	the `hl_stk` Hoare proof construct for the Stack language with
-	regards to the Hoare triple definition `triple_stk`.
+
+1. [The CC proof
+   compiler](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/ProofCompiler/ProofCompCodeCompAgnosticMod.v#L33)
+2. [The Tree proof compiler](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/ProofCompiler/TreeProofCompiler.v#L15)
+3. [The "preserves stack" relation, `exp_stack_pure_rel`](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Stack/StackPurestBase.v#L27)
+4. [The relation between Imp environments and Stack's stacks](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/SpecCompiler/LogicTranslationBase.v#L4)
+5. [The Tree
+   plugin](https://github.com/uwplse/potpie/tree/v0.3/plugin/src/)
+6. [An example of the plugin being invoked](https://github.com/uwplse/potpie/tree/v0.3/plugin/theories/Demo.v#L55)
+7. [The implication database translation proof obligation](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/ProofCompiler/ProofCompilableCodeCompiler.v#L714)
+8. [The compiler that changes < to <= (and its associated proof compiler)](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/CodeCompiler/EnvToStackLTtoLEQ.v#L41)
+9. [The multiplication wrapper helper lemma from Section <>](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/rsa_impLang.v#L160)
+10. [The exponentiation wrapper helper lemma from Section <>](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/Exponentiation.v#L253)
+11. [The hoare triple for the infinite series example](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/SeriesExample.v#L705)
+12. [Soundness lemma for Tree](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/ProofCompiler/TreeProofCompiler.v#L70)
+13. [The lemma that shows that `stk_valid_tree`, the certificate type,
+    can be used to obtain `hl_stk`, the Stack Hoare proof type](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Stack/StkHoareTree.v#L218)
+14. [The left shift case study, compiled with the incomplete compiler](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/ExampleLeftShift_Incomplete.v)
+15. [The max case study, compiled with the incorrect optimization compiler](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/MaxIncorrectProofCompilationExample.v)
+16. [The max case study, compiled with the unverified correct compiler](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/MaxUnprovenCorrectProofCompilationExample.v)
+17. [The min case study, which has to be compiled with the unverified
+    correct compiler](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/MinProofCompilationExample.v)
+18. [The incomplete proof compiler (from our PotPie 3 Ways)](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/ProofCompilers/IncompleteProofCompiler.v)
+19. [The incorrect proof compiler (from the PotPie 3 Ways section)](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/ProofCompilers/BuggyProofCompiler.v)
+20. [The unverified correct proof compiler](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Examples/ProofCompilers/UnprovenCorrectProofCompiler.v)
+21. [The certificate generator in the Tree plugin](https://github.com/uwplse/potpie/tree/v0.3/plugin/src/checker.ml#L81)
+22. [`stk_valid_tree`, the certificate type](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Stack/StkHoareTree.v#L61)
+23. [How the plugin's boolean tree checker determines that all of the
+    functions preserve the stack](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Stack/FuncsFrame.v#L133)
+24. [The plugin's boolean tree checker](https://github.com/uwplse/potpie/tree/v0.3/plugin/src/boolChecker.ml#L)
+25. [Uniqueness of Identity Proofs (UIP) for `AbsEnv`, the type of
+    assertions for
+    Imp](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Imp/Imp_LangLogPropDec.v#L19):
+    note that this also lets us get UIP for the implication database
+    for Imp, since UIP for a type `T` implies UIP for `T * T` pairs,
+    and UIP for a type `A` implies UIP for `list A`.
+26. [UIP for Imp's function environments](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/ProofCompiler/ProofCompilerHelpers.v#L100)
+27. [An example of setting opaques for the plugin's normalization
+    algorithm](https://github.com/uwplse/potpie/tree/v0.3/plugin/theories/Demo.v#L49):
+    this led to 100x speedup for the certificate generator!
+28. [Proof compiler
+    automation, which helps with satisfying proof obligations for both
+	Tree and CC](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/ProofCompiler/ProofCompAuto.v)
+29. [Semantics proof automation, which also helps with proof obligations](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/Tactics/SemanTactics.v)
+30. [Sound translation of a Hoare triple's precondition, one of our
+    proof obligations](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/ProofCompiler/ProofCompCodeCompAgnosticMod.v#L68)
+31. [Sound translation of a Hoare triple's postcondition, another one
+    of our proof obligations](https://github.com/uwplse/potpie/tree/v0.3/Imp_LangTrick/ProofCompiler/ProofCompCodeCompAgnosticMod.v#L69)
+32. [Utilizing unification with Coq's options to avoid unnecessary
+    normalization calls](https://github.com/uwplse/potpie/tree/v0.3/plugin/src/CoqCoreInductives.ml#L54)
