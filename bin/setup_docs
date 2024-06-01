@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+PROJ_DIR=$(dirname $SCRIPT_DIR)
+
+cd $PROJ_DIR
+rm -rf docs
+
+mkdir -p docs/plugin/theories
+mv _build/default/Imp_LangTrick/Imp_LangTrick.html/* docs
+cp -R _build/default/_doc/_html/ docs/plugin
+cp -R _build/default/plugin/theories/Hoarechecker.html/ docs/plugin/theories
+
