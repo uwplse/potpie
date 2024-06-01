@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>Hoarechecker.CheckingDemo</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library Hoarechecker.CheckingDemo</h1>
+
+<div class="code">
+<span class="id" title="keyword">From</span> <span class="id" title="var">Hoarechecker</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="Hoarechecker.Loader.html#"><span class="id" title="library">Loader</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Program.Tactics.html#"><span class="id" title="library">Coq.Program.Tactics</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Strings.String.html#"><span class="id" title="library">String</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.ZArith.ZArith.html#"><span class="id" title="library">ZArith</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">StkHoareTree</span> <span class="id" title="library">StackLogicGrammar</span> <span class="id" title="library">LogicProp</span> <span class="id" title="library">StackLanguage</span> <span class="id" title="library">PluginHelpers</span> <span class="id" title="library">StateUpdateReflection</span> <span class="id" title="library">StackLogic</span> <span class="id" title="library">StackIncreaseAdequacy</span> <span class="id" title="library">StackIncrease</span> <span class="id" title="library">StackPurestBaseReflection</span> <span class="id" title="library">SeriesHelperCompilation</span> <span class="id" title="library">TreeCompilationExample</span> <span class="id" title="library">FuncsFrame</span> <span class="id" title="library">StackFrameBase</span> <span class="id" title="library">StackFrameReflection</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Unset</span> <span class="id" title="var">HoareChecker</span> <span class="id" title="var">Certify</span>.<br/>
+
+<br/>
+<span class="id" title="var">Configure</span> <span class="id" title="var">HoareChecker</span> { <span class="id" title="var">opaque</span><br/>
+&nbsp;&nbsp;<span class="id" title="var">nth_error</span> <span class="id" title="var">nth_default</span> <span class="id" title="var">nth</span><br/>
+&nbsp;&nbsp;<span class="id" title="var">Nat.mul</span> <span class="id" title="var">Nat.add</span> <span class="id" title="var">Nat.sub</span> <span class="id" title="var">Nat.pow</span><br/>
+&nbsp;&nbsp;<span class="id" title="var">Z.of_nat</span> <span class="id" title="var">Z.pow</span> <span class="id" title="var">Z.add</span> <span class="id" title="var">Z.mul</span> <span class="id" title="var">Z.sub</span><br/>
+}.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">ProdTargetTree.tree</span>) (<span class="id" title="definition">ProdTargetTree.fenv</span>) (<span class="id" title="definition">ProdTargetTree.facts</span>) (<span class="id" title="lemma">ProdValidFacts.valid_facts</span>) (<span class="id" title="definition">ProdTargetTree.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">prod</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Print</span> <a class="idref" href="Hoarechecker.CheckingDemo.html#prod"><span class="id" title="definition">prod</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">ExpTargetTree.tree</span>) (<span class="id" title="definition">ExpTargetTree.fenv</span>) (<span class="id" title="definition">ExpTargetTree.facts</span>) (<span class="id" title="lemma">ExpValidFacts.valid_facts</span>) (<span class="id" title="definition">ExpTargetTree.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">exp</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Print</span> <a class="idref" href="Hoarechecker.CheckingDemo.html#exp"><span class="id" title="definition">exp</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">SqrtTargetTree.tree</span>) (<span class="id" title="definition">SqrtTargetTree.fenv</span>) (<span class="id" title="definition">SqrtTargetTree.facts</span>) (<span class="id" title="lemma">SqrtTargetFacts.valid_facts</span>) (<span class="id" title="definition">SqrtTargetTree.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">sqrt</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Print</span> <a class="idref" href="Hoarechecker.CheckingDemo.html#sqrt"><span class="id" title="definition">sqrt</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">SeriesTargetTree.tree</span>) (<span class="id" title="definition">SeriesTargetTree.fenv</span>) (<span class="id" title="definition">SeriesTargetTree.facts</span>) (<span class="id" title="lemma">SeriesTargetFacts.valid_facts</span>) (<span class="id" title="definition">SeriesTargetTree.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">series</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Print</span> <a class="idref" href="Hoarechecker.CheckingDemo.html#series"><span class="id" title="definition">series</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">LShiftTargetTree.tree</span>) (<span class="id" title="definition">LShiftTargetTree.fenv</span>) (<span class="id" title="definition">LShiftTargetTree.facts</span>) (<span class="id" title="lemma">LShiftTargetFacts.valid_facts</span>) (<span class="id" title="definition">LShiftTargetTree.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">lshift</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Print</span> <a class="idref" href="Hoarechecker.CheckingDemo.html#lshift"><span class="id" title="definition">lshift</span></a>.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

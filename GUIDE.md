@@ -7,7 +7,7 @@
 4. [The relation between Imp environments and Stack's stacks](docs/Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#state_to_stack)
 5. [The Tree
    plugin](docs/plugin)
-6. [An example of the plugin being invoked](https://github.com/uwplse/potpie/tree/v0.4/plugin/theories/Demo.v#L55)
+6. [An example of the plugin being invoked](docs/plugin/theories/HoareChecker.Demo.html)
 7. [The implication database translation proof obligation](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/ProofCompiler/ProofCompilableCodeCompiler.v#L714)
 8. [The compiler that changes < to <= (and its associated proof compiler)](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/CodeCompiler/EnvToStackLTtoLEQ.v#L41)
 9. [The multiplication wrapper helper lemma from Section <>](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/Examples/rsa_impLang.v#L160)

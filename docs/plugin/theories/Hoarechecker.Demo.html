@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>Hoarechecker.Demo</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library Hoarechecker.Demo</h1>
+
+<div class="code">
+<span class="id" title="keyword">From</span> <span class="id" title="var">Hoarechecker</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="Hoarechecker.Loader.html#"><span class="id" title="library">Loader</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Program.Tactics.html#"><span class="id" title="library">Coq.Program.Tactics</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Strings.String.html#"><span class="id" title="library">String</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.ZArith.ZArith.html#"><span class="id" title="library">ZArith</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">StkHoareTree</span> <span class="id" title="library">StackLogicGrammar</span> <span class="id" title="library">LogicProp</span> <span class="id" title="library">StackLanguage</span> <span class="id" title="library">PluginHelpers</span> <span class="id" title="library">StateUpdateReflection</span> <span class="id" title="library">StackLogic</span> <span class="id" title="library">StackIncreaseAdequacy</span> <span class="id" title="library">StackIncrease</span> <span class="id" title="library">StackPurestBaseReflection</span> <span class="id" title="library">SeriesHelperCompilation</span> <span class="id" title="library">TreeCompilationExample</span> <span class="id" title="library">FuncsFrame</span> <span class="id" title="library">StackFrameBase</span> <span class="id" title="library">StackFrameReflection</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Local Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">string_scope</span>.<br/>
+<span class="id" title="keyword">Local Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">list_scope</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="abstruetrue" class="idref" href="#abstruetrue"><span class="id" title="definition">abstruetrue</span></a> := <span class="id" title="constructor">BaseState</span> <span class="id" title="constructor">AbsStkTrue</span> (<span class="id" title="constructor">MetaBool</span> (<span class="id" title="constructor">TrueProp</span> <span class="id" title="var">_</span> <span class="id" title="var">_</span> )).<br/>
+<span class="id" title="keyword">Definition</span> <a id="abstrue" class="idref" href="#abstrue"><span class="id" title="definition">abstrue</span></a> := <span class="id" title="constructor">BaseState</span> (<span class="id" title="constructor">AbsStkSize</span> 3) (<span class="id" title="constructor">MetaBool</span> (<span class="id" title="constructor">TrueProp</span> <span class="id" title="var">_</span> <span class="id" title="var">_</span> )).<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="absand1" class="idref" href="#absand1"><span class="id" title="definition">absand1</span></a> := <span class="id" title="keyword">Eval</span> <span class="id" title="tactic">compute</span> <span class="id" title="tactic">in</span> (<span class="id" title="constructor">AbsAnd</span> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a> <a class="idref" href="Hoarechecker.Demo.html#abstruetrue"><span class="id" title="definition">abstruetrue</span></a>).<br/>
+<span class="id" title="keyword">Definition</span> <a id="absand2" class="idref" href="#absand2"><span class="id" title="definition">absand2</span></a> := <span class="id" title="keyword">Eval</span> <span class="id" title="tactic">compute</span> <span class="id" title="tactic">in</span> (<span class="id" title="constructor">AbsAnd</span> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="add_1_2" class="idref" href="#add_1_2"><span class="id" title="definition">add_1_2</span></a> := <span class="id" title="constructor">Plus_Stk</span> (<span class="id" title="constructor">Const_Stk</span> 1) (<span class="id" title="constructor">Const_Stk</span> 2).<br/>
+<span class="id" title="keyword">Definition</span> <a id="assign_2_add_1_2" class="idref" href="#assign_2_add_1_2"><span class="id" title="definition">assign_2_add_1_2</span></a> := <span class="id" title="constructor">Assign_Stk</span> 2 <a class="idref" href="Hoarechecker.Demo.html#add_1_2"><span class="id" title="definition">add_1_2</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="my_tree" class="idref" href="#my_tree"><span class="id" title="definition">my_tree</span></a> := <span class="id" title="constructor">StkHTAssign</span> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a> 2 <a class="idref" href="Hoarechecker.Demo.html#add_1_2"><span class="id" title="definition">add_1_2</span></a>.<br/>
+<span class="id" title="keyword">Definition</span> <a id="my_seq" class="idref" href="#my_seq"><span class="id" title="definition">my_seq</span></a> := <span class="id" title="constructor">Seq_Stk</span> <a class="idref" href="Hoarechecker.Demo.html#assign_2_add_1_2"><span class="id" title="definition">assign_2_add_1_2</span></a> <a class="idref" href="Hoarechecker.Demo.html#assign_2_add_1_2"><span class="id" title="definition">assign_2_add_1_2</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="seq_tree" class="idref" href="#seq_tree"><span class="id" title="definition">seq_tree</span></a> := <span class="id" title="constructor">StkHTSeq</span> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a> <a class="idref" href="Hoarechecker.Demo.html#assign_2_add_1_2"><span class="id" title="definition">assign_2_add_1_2</span></a> <a class="idref" href="Hoarechecker.Demo.html#assign_2_add_1_2"><span class="id" title="definition">assign_2_add_1_2</span></a> <a class="idref" href="Hoarechecker.Demo.html#my_tree"><span class="id" title="definition">my_tree</span></a> <a class="idref" href="Hoarechecker.Demo.html#my_tree"><span class="id" title="definition">my_tree</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="push" class="idref" href="#push"><span class="id" title="definition">push</span></a> := <span class="id" title="constructor">Push_Stk</span>.<br/>
+<span class="id" title="keyword">Definition</span> <a id="push_tree" class="idref" href="#push_tree"><span class="id" title="definition">push_tree</span></a> := <span class="id" title="constructor">StkHTPush</span> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a>.<br/>
+<span class="id" title="keyword">Definition</span> <a id="my_if" class="idref" href="#my_if"><span class="id" title="definition">my_if</span></a> := <span class="id" title="constructor">If_Stk</span> <span class="id" title="constructor">True_Stk</span> <a class="idref" href="Hoarechecker.Demo.html#assign_2_add_1_2"><span class="id" title="definition">assign_2_add_1_2</span></a> <a class="idref" href="Hoarechecker.Demo.html#assign_2_add_1_2"><span class="id" title="definition">assign_2_add_1_2</span></a>.<br/>
+<span class="id" title="keyword">Definition</span> <a id="if_tree" class="idref" href="#if_tree"><span class="id" title="definition">if_tree</span></a> := <span class="id" title="constructor">StkHTIf</span> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a> <a class="idref" href="Hoarechecker.Demo.html#abstrue"><span class="id" title="definition">abstrue</span></a> <span class="id" title="constructor">True_Stk</span> <a class="idref" href="Hoarechecker.Demo.html#assign_2_add_1_2"><span class="id" title="definition">assign_2_add_1_2</span></a> <a class="idref" href="Hoarechecker.Demo.html#my_seq"><span class="id" title="definition">my_seq</span></a> <a class="idref" href="Hoarechecker.Demo.html#my_tree"><span class="id" title="definition">my_tree</span></a> <a class="idref" href="Hoarechecker.Demo.html#seq_tree"><span class="id" title="definition">seq_tree</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="simple_fun" class="idref" href="#simple_fun"><span class="id" title="definition">simple_fun</span></a> := <span class="id" title="keyword">Eval</span> <span class="id" title="tactic">compute</span> <span class="id" title="tactic">in</span> (<span class="id" title="definition">init_fenv_stk</span> "id").<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="my_facts_env" class="idref" href="#my_facts_env"><span class="id" title="definition">my_facts_env</span></a>: <span class="id" title="definition">implication_env_stk</span> := <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="roc_example" class="idref" href="#roc_example"><span class="id" title="definition">roc_example</span></a> := <span class="id" title="constructor">StkHTCon</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="Hoarechecker.Demo.html#absand1"><span class="id" title="definition">absand1</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a> <a class="idref" href="Hoarechecker.Demo.html#absand2"><span class="id" title="definition">absand2</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="Hoarechecker.Demo.html#absand2"><span class="id" title="definition">absand2</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a> <a class="idref" href="Hoarechecker.Demo.html#absand2"><span class="id" title="definition">absand2</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> (<span class="id" title="constructor">Skip_Stk</span>) (<span class="id" title="constructor">StkHTSkip</span> <a class="idref" href="Hoarechecker.Demo.html#absand2"><span class="id" title="definition">absand2</span></a>).<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Set</span> <span class="id" title="var">HoareChecker</span> <span class="id" title="var">Certify</span>.<br/>
+
+<br/>
+<span class="id" title="var">Configure</span> <span class="id" title="var">HoareChecker</span> { <span class="id" title="var">opaque</span><br/>
+&nbsp;&nbsp;<span class="id" title="var">nth_error</span> <span class="id" title="var">nth_default</span> <span class="id" title="var">nth</span><br/>
+&nbsp;&nbsp;<span class="id" title="var">Nat.mul</span> <span class="id" title="var">Nat.add</span> <span class="id" title="var">Nat.sub</span> <span class="id" title="var">Nat.pow</span><br/>
+&nbsp;&nbsp;<span class="id" title="var">Z.of_nat</span> <span class="id" title="var">Z.pow</span> <span class="id" title="var">Z.add</span> <span class="id" title="var">Z.mul</span> <span class="id" title="var">Z.sub</span><br/>
+}.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> <a class="idref" href="Hoarechecker.Demo.html#my_tree"><span class="id" title="definition">my_tree</span></a> <span class="id" title="definition">init_fenv_stk</span> <a class="idref" href="Hoarechecker.Demo.html#my_facts_env"><span class="id" title="definition">my_facts_env</span></a> <span class="id" title="lemma">empty_facts_valid</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <span class="id" title="keyword">as</span> <span class="id" title="var">bar</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Check</span> <a class="idref" href="Hoarechecker.Demo.html#bar"><span class="id" title="definition">bar</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> <a class="idref" href="Hoarechecker.Demo.html#seq_tree"><span class="id" title="definition">seq_tree</span></a> <span class="id" title="definition">init_fenv_stk</span> <a class="idref" href="Hoarechecker.Demo.html#my_facts_env"><span class="id" title="definition">my_facts_env</span></a> <span class="id" title="lemma">empty_facts_valid</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <span class="id" title="keyword">as</span> <span class="id" title="var">baz</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Check</span> <a class="idref" href="Hoarechecker.Demo.html#baz"><span class="id" title="definition">baz</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> <a class="idref" href="Hoarechecker.Demo.html#roc_example"><span class="id" title="definition">roc_example</span></a> <span class="id" title="definition">init_fenv_stk</span> <a class="idref" href="Hoarechecker.Demo.html#my_facts_env"><span class="id" title="definition">my_facts_env</span></a> <span class="id" title="lemma">empty_facts_valid</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <span class="id" title="keyword">as</span> <span class="id" title="var">foo</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Check</span> <a class="idref" href="Hoarechecker.Demo.html#foo"><span class="id" title="definition">foo</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">ProdTargetTree.tree</span>) (<span class="id" title="definition">ProdTargetTree.fenv</span>) (<span class="id" title="definition">ProdTargetTree.facts</span>) (<span class="id" title="lemma">ProdValidFacts.valid_facts</span>) (<span class="id" title="definition">ProdTargetTree.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">prod</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Check</span> <a class="idref" href="Hoarechecker.Demo.html#prod"><span class="id" title="definition">prod</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">ExpTargetTree.tree</span>) (<span class="id" title="definition">ExpTargetTree.fenv</span>) (<span class="id" title="definition">ExpTargetTree.facts</span>) (<span class="id" title="lemma">ExpValidFacts.valid_facts</span>) (<span class="id" title="definition">ExpTargetTree.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">exp</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Check</span> <a class="idref" href="Hoarechecker.Demo.html#exp"><span class="id" title="definition">exp</span></a>.<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">LShiftTargetTree.tree</span>) (<span class="id" title="definition">LShiftTargetTree.fenv</span>) (<span class="id" title="definition">LShiftTargetTree.facts</span>) (<span class="id" title="lemma">LShiftTargetFacts.valid_facts</span>) (<span class="id" title="definition">LShiftTargetTree.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">lshift</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Check</span> <a class="idref" href="Hoarechecker.Demo.html#lshift"><span class="id" title="definition">lshift</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Unset</span> <span class="id" title="var">HoareChecker</span> <span class="id" title="var">Certify</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">MaxTargetTree.tree</span>) (<span class="id" title="definition">MaxTargetTree.fenv</span>) (<span class="id" title="definition">MaxTargetTree.facts</span>) (<span class="id" title="lemma">MaxTargetFacts.valid_facts</span>) (<span class="id" title="definition">MaxTargetTree.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">maxincomplete</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Print</span> <a class="idref" href="Hoarechecker.Demo.html#maxincomplete"><span class="id" title="definition">maxincomplete</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Time</span> <span class="id" title="var">Certify</span> (<span class="id" title="definition">MaxTargetTreeCorrect.tree</span>) (<span class="id" title="definition">MaxTargetTreeCorrect.fenv</span>) (<span class="id" title="definition">MaxTargetTreeCorrect.facts</span>) (<span class="id" title="lemma">MaxTargetFactsCorrect.valid_facts</span>) (<span class="id" title="definition">MaxTargetTreeCorrect.funcs</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">maxcorrect</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Print</span> <a class="idref" href="Hoarechecker.Demo.html#maxcorrect"><span class="id" title="definition">maxcorrect</span></a>.<br/>
+
+<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>
