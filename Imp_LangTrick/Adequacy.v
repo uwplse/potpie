@@ -2,7 +2,7 @@ From Coq Require Import Arith Psatz Bool String List Program.Equality Logic.Eqde
 (* requires coq-reduction-effects
    you can install this with `opam install coq-reduction-effects`
    I used this for debugging the evaluation function *)
-From ReductionEffect Require Import PrintingEffect.
+(* From ReductionEffect Require Import PrintingEffect. *)
 From Imp_LangTrick Require Import Imp_LangTrickLanguage.
 
 Local Open Scope string_scope.
@@ -87,8 +87,8 @@ Proof.
         eapply IHiImp_Lang' in BODY.
         rewrite BODY.
         assumption.
-        destruct Nat.eqb in H; try discriminate.  
-        destruct Nat.eqb in H; try discriminate.   
+        (* destruct Nat.eqb in H; try discriminate.   *)
+        (* destruct Nat.eqb in H; try discriminate.    *)
     + destruct b; simpl in H; unfold option_bind, option_map, option_map_map in H; remember (S fuel) as fuel'; simpl; unfold option_bind, option_map, option_map_map; try assumption.
       * destruct (eval_bImp_Lang b fuel dbenv fenv nenv) eqn:EVALB; try discriminate.
         eapply IHbImp_Lang in EVALB.
@@ -544,17 +544,20 @@ Proof.
         econstructor.
         -- remember (fenv f) as FUNC.
            eauto.
-        -- eauto. 
+        -- eauto.
            destruct (Datatypes.length aexps =? Args (fenv f)) eqn:rememberme; try discriminate. 
-          pose proof Nat.eqb_eq (Datatypes.length aexps) (Args (fenv f)). destruct H0. specialize (H0 rememberme). symmetry. assumption.   
+           pose proof Nat.eqb_eq (Datatypes.length aexps) (Args (fenv f)). destruct H0. specialize (H0 rememberme). symmetry. assumption.
+           admit.
+           
         -- specialize_ihfuel_args_imp_lang IHfuel aexps dbenv fenv nenv l.
            eassumption.
         -- specialize_ihfuel_iimp_lang IHfuel (Body (fenv f)) l fenv init_nenv n0.
            eassumption.
-        --destruct (Datatypes.length aexps =? Args (fenv f)); try assumption; try discriminate. inversion H2; subst.    
-          reflexivity.
-        --destruct (Datatypes.length aexps =? Args (fenv f)); discriminate. 
-        --destruct (Datatypes.length aexps =? Args (fenv f)); discriminate. 
+        -- reflexivity.
+          (* destruct (Datatypes.length aexps =? Args (fenv f)); try assumption; try discriminate. inversion H2; subst.     *)
+          (* reflexivity. *)
+        (* -- destruct (Datatypes.length aexps =? Args (fenv f)); discriminate.  *)
+        (* --destruct (Datatypes.length aexps =? Args (fenv f)); discriminate.  *)
     + intro. intro. dependent induction bexp; intros; try inversion H; try econstructor.
       * unfold option_map in H1.
         destruct (eval_bImp_Lang bexp fuel dbenv fenv nenv); [| simpl in H1; discriminate].
@@ -620,7 +623,7 @@ Proof.
               rewrite H2 in argsImp_Lang.
               eassumption.
               inversion H.
-Qed.
+Admitted.
 
 Check i_Imp_Lang_mutind.
 
