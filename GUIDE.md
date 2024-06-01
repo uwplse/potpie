@@ -1,7 +1,7 @@
 ## Claims
 
 1. [The CC proof
-   compiler](Imp_LangTrick.ProofCompiler.ProofCompCodeCompAgnosticMod.html#CompilerAgnosticProofCompilerType.proof_compiler)
+   compiler](docs/Imp_LangTrick.ProofCompiler.ProofCompCodeCompAgnosticMod.html#CompilerAgnosticProofCompilerType.proof_compiler)
 2. [The Tree proof compiler](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/ProofCompiler/TreeProofCompiler.v#L15)
 3. [The "preserves stack" relation, `exp_stack_pure_rel`](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/Stack/StackPurestBase.v#L27)
 4. [The relation between Imp environments and Stack's stacks](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/SpecCompiler/LogicTranslationBase.v#L4)
