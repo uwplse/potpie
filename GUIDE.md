@@ -3,10 +3,10 @@
 1. [The CC proof
    compiler](docs/Imp_LangTrick.ProofCompiler.ProofCompCodeCompAgnosticMod.html#CompilerAgnosticProofCompilerType.proof_compiler)
 2. [The Tree proof compiler](docs/Imp_LangTrick.ProofCompiler.TreeProofCompiler.html#TreeProofCompiler)
-3. [The "preserves stack" relation, `exp_stack_pure_rel`](https://uwplse.org/potpie/docs/Imp_LangTrick.Stack.StackPurestBase.html#bexp_stack_pure_rel)
-4. [The relation between Imp environments and Stack's stacks](https://uwplse.org/potpie/docs/Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#state_to_stack)
+3. [The "preserves stack" relation, `exp_stack_pure_rel`](docs/Imp_LangTrick.Stack.StackPurestBase.html#bexp_stack_pure_rel)
+4. [The relation between Imp environments and Stack's stacks](docs/Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#state_to_stack)
 5. [The Tree
-   plugin](https://github.com/uwplse/potpie/tree/v0.4/plugin/src/)
+   plugin](docs/plugin)
 6. [An example of the plugin being invoked](https://github.com/uwplse/potpie/tree/v0.4/plugin/theories/Demo.v#L55)
 7. [The implication database translation proof obligation](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/ProofCompiler/ProofCompilableCodeCompiler.v#L714)
 8. [The compiler that changes < to <= (and its associated proof compiler)](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/CodeCompiler/EnvToStackLTtoLEQ.v#L41)
