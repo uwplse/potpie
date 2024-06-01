@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>Imp_LangTrick.Examples.SeriesHelperCompilation</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library Imp_LangTrick.Examples.SeriesHelperCompilation</h1>
+
+<div class="code">
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.micromega.Psatz.html#"><span class="id" title="library">Psatz</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Arith.Arith.html#"><span class="id" title="library">Arith</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Strings.String.html#"><span class="id" title="library">String</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="Imp_LangTrick.Stack.StackLanguage.html#"><span class="id" title="library">StackLanguage</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#"><span class="id" title="library">Imp_LangTrickLanguage</span></a> <a class="idref" href="Imp_LangTrick.Base.html#"><span class="id" title="library">Base</span></a> <a class="idref" href="Imp_LangTrick.Examples.rsa_impLang.html#"><span class="id" title="library">rsa_impLang</span></a> <a class="idref" href="Imp_LangTrick.Examples.SeriesExample.html#"><span class="id" title="library">SeriesExample</span></a> <a class="idref" href="Imp_LangTrick.FunctionWellFormed.html#"><span class="id" title="library">FunctionWellFormed</span></a> <a class="idref" href="Imp_LangTrick.CodeCompiler.EnvToStackLTtoLEQ.html#"><span class="id" title="library">EnvToStackLTtoLEQ</span></a> <a class="idref" href="Imp_LangTrick.SpecCompiler.TranslationPure.html#"><span class="id" title="library">TranslationPure</span></a> <a class="idref" href="Imp_LangTrick.ProofCompiler.ProofCompMod.html#"><span class="id" title="library">ProofCompMod</span></a> <a class="idref" href="Imp_LangTrick.Stack.StackLangTheorems.html#"><span class="id" title="library">StackLangTheorems</span></a> <a class="idref" href="Imp_LangTrick.ParamsWellFormed.html#"><span class="id" title="library">ParamsWellFormed</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangImpHigherOrderRel.html#"><span class="id" title="library">Imp_LangImpHigherOrderRel</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangImpHigherOrderRelTheorems.html#"><span class="id" title="library">Imp_LangImpHigherOrderRelTheorems</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangDec.html#"><span class="id" title="library">Imp_LangDec</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogPropDec.html#"><span class="id" title="library">Imp_LangLogPropDec</span></a> <a class="idref" href="Imp_LangTrick.UIPList.html#"><span class="id" title="library">UIPList</span></a> <a class="idref" href="Imp_LangTrick.Stack.StackLanguage.html#"><span class="id" title="library">StackLanguage</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Local Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">list_scope</span>.<br/>
+<span class="id" title="keyword">Local Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">string_scope</span>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="Imp_LangTrick.ProofCompiler.ProofCompAutoAnother.html#"><span class="id" title="library">ProofCompAutoAnother</span></a> <a class="idref" href="Imp_LangTrick.Examples.BloomFilterArrayProgram.html#"><span class="id" title="library">BloomFilterArrayProgram</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="Imp_LangTrick.LogicProp.LogicProp.html#"><span class="id" title="library">LogicProp</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogProp.html#"><span class="id" title="library">Imp_LangLogProp</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogHoare.html#"><span class="id" title="library">Imp_LangLogHoare</span></a>  <a class="idref" href="Imp_LangTrick.ProofCompiler.ProofCompAuto.html#"><span class="id" title="library">ProofCompAuto</span></a> <a class="idref" href="Imp_LangTrick.ProofCompiler.ProofCompCodeCompAgnosticMod.html#"><span class="id" title="library">ProofCompCodeCompAgnosticMod</span></a> <a class="idref" href="Imp_LangTrick.Tactics.AimpWfAndCheckProofAuto.html#"><span class="id" title="library">AimpWfAndCheckProofAuto</span></a> <a class="idref" href="Imp_LangTrick.Stack.StackLangTheorems.html#"><span class="id" title="library">StackLangTheorems</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <a class="idref" href="Imp_LangTrick.Examples.MultiplicationCompiled.html#"><span class="id" title="library">MultiplicationCompiled</span></a> <a class="idref" href="Imp_LangTrick.Examples.ExponentiationCompiled.html#"><span class="id" title="library">ExponentiationCompiled</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Local Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">imp_langtrick_scope</span>.<br/>
+
+<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

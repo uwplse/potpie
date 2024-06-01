@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>Imp_LangTrick.SpecCompiler.LogicTranslationBase</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library Imp_LangTrick.SpecCompiler.LogicTranslationBase</h1>
+
+<div class="code">
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Strings.String.html#"><span class="id" title="library">String</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Arith.Arith.html#"><span class="id" title="library">Arith</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.micromega.Psatz.html#"><span class="id" title="library">Psatz</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Bool.Bool.html#"><span class="id" title="library">Bool</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Program.Equality.html#"><span class="id" title="library">Program.Equality</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Lists.ListSet.html#"><span class="id" title="library">Lists.ListSet</span></a> .<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#"><span class="id" title="library">Imp_LangTrickLanguage</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogProp.html#"><span class="id" title="library">Imp_LangLogProp</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#"><span class="id" title="library">Imp_LangLogicHelpers</span></a> <a class="idref" href="Imp_LangTrick.Stack.StackLanguage.html#"><span class="id" title="library">StackLanguage</span></a> <a class="idref" href="Imp_LangTrick.CodeCompiler.EnvToStack.html#"><span class="id" title="library">EnvToStack</span></a> <a class="idref" href="Imp_LangTrick.Stack.StackLogicGrammar.html#"><span class="id" title="library">StackLogicGrammar</span></a> <a class="idref" href="Imp_LangTrick.LogicProp.LogicProp.html#"><span class="id" title="library">LogicProp</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Inductive</span> <a id="state_to_stack" class="idref" href="#state_to_stack"><span class="id" title="inductive">state_to_stack</span></a> : <br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="Imp_LangTrick.Base.html#ident"><span class="id" title="definition">ident</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#nat_env"><span class="id" title="definition">nat_env</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> <br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Prop</span> := <br/>
+&nbsp;&nbsp;| <a id="State_trans" class="idref" href="#State_trans"><span class="id" title="constructor">State_trans</span></a> : <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <a id="map:3" class="idref" href="#map:3"><span class="id" title="binder">map</span></a> <a id="nenv:4" class="idref" href="#nenv:4"><span class="id" title="binder">nenv</span></a> <a id="dbenv:5" class="idref" href="#dbenv:5"><span class="id" title="binder">dbenv</span></a>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#state_to_stack:1"><span class="id" title="inductive">state_to_stack</span></a> <a class="idref" href="Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#map:3"><span class="id" title="variable">map</span></a> <a class="idref" href="Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#nenv:4"><span class="id" title="variable">nenv</span></a> <a class="idref" href="Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#dbenv:5"><span class="id" title="variable">dbenv</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Lists.List.html#map"><span class="id" title="definition">List.map</span></a> <a class="idref" href="Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#nenv:4"><span class="id" title="variable">nenv</span></a> <a class="idref" href="Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#map:3"><span class="id" title="variable">map</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#dbenv:5"><span class="id" title="variable">dbenv</span></a>).<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

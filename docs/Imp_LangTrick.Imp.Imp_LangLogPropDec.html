@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>Imp_LangTrick.Imp.Imp_LangLogPropDec</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library Imp_LangTrick.Imp.Imp_LangLogPropDec</h1>
+
+<div class="code">
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Arith.Arith.html#"><span class="id" title="library">Arith</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Logic.Eqdep_dec.html#"><span class="id" title="library">Eqdep_dec</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#"><span class="id" title="library">Imp_LangTrickLanguage</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogProp.html#"><span class="id" title="library">Imp_LangLogProp</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="Imp_LangTrick.LogicProp.LogicProp.html#"><span class="id" title="library">LogicProp</span></a> <a class="idref" href="Imp_LangTrick.LogicProp.LogicPropDec.html#"><span class="id" title="library">LogicPropDec</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">unfold_logic_prop_defs</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="Imp_LangTrick.LogicProp.LogicPropDec.html#UIP_LogicPropAexpImp_Lang.LP.lp_t"><span class="id" title="definition">UIP_LogicPropAexpImp_Lang.LP.lp_t</span></a> <span class="id" title="tactic">in</span> *;<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="Imp_LangTrick.LogicProp.LogicPropDec.html#UIP_LogicPropAexpImp_Lang.LP.A"><span class="id" title="axiom">UIP_LogicPropAexpImp_Lang.LP.A</span></a> <span class="id" title="tactic">in</span> *;<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="Imp_LangTrick.LogicProp.LogicPropDec.html#UIP_LogicPropAexpImp_Lang.LP.V"><span class="id" title="axiom">UIP_LogicPropAexpImp_Lang.LP.V</span></a> <span class="id" title="tactic">in</span> *;<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="Imp_LangTrick.LogicProp.LogicPropDec.html#UIP_LPBexpImp_Lang.LP.lp_t"><span class="id" title="definition">UIP_LPBexpImp_Lang.LP.lp_t</span></a> <span class="id" title="tactic">in</span> *;<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="Imp_LangTrick.LogicProp.LogicPropDec.html#UIP_LPBexpImp_Lang.LP.A"><span class="id" title="axiom">UIP_LPBexpImp_Lang.LP.A</span></a>, <a class="idref" href="Imp_LangTrick.LogicProp.LogicPropDec.html#UIP_LPBexpImp_Lang.LP.V"><span class="id" title="axiom">UIP_LPBexpImp_Lang.LP.V</span></a> <span class="id" title="tactic">in</span> *.<br/>
+
+<br/>
+<span class="id" title="keyword">Axiom</span> <a id="UIP_AbsEnv" class="idref" href="#UIP_AbsEnv"><span class="id" title="axiom">UIP_AbsEnv</span></a> :<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<a id="l1:1" class="idref" href="#l1:1"><span class="id" title="binder">l1</span></a> <a id="l2:2" class="idref" href="#l2:2"><span class="id" title="binder">l2</span></a>: <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogProp.html#AbsEnv"><span class="id" title="inductive">AbsEnv</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="p1:3" class="idref" href="#p1:3"><span class="id" title="binder">p1</span></a> <a id="p2:4" class="idref" href="#p2:4"><span class="id" title="binder">p2</span></a>: <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogPropDec.html#l1:1"><span class="id" title="variable">l1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogPropDec.html#l2:2"><span class="id" title="variable">l2</span></a>),<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogPropDec.html#p1:3"><span class="id" title="variable">p1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogPropDec.html#p2:4"><span class="id" title="variable">p2</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="UIP_AbsEnv_refl" class="idref" href="#UIP_AbsEnv_refl"><span class="id" title="lemma">UIP_AbsEnv_refl</span></a> :<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> (<a id="l:6" class="idref" href="#l:6"><span class="id" title="binder">l</span></a>: <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogProp.html#AbsEnv"><span class="id" title="inductive">AbsEnv</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="p:7" class="idref" href="#p:7"><span class="id" title="binder">p</span></a>: <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogPropDec.html#l:6"><span class="id" title="variable">l</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogPropDec.html#l:6"><span class="id" title="variable">l</span></a>),<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogPropDec.html#p:7"><span class="id" title="variable">p</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#eq_refl"><span class="id" title="constructor">eq_refl</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">pose</span> <span class="id" title="var">proof</span> (<a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogPropDec.html#UIP_AbsEnv"><span class="id" title="axiom">UIP_AbsEnv</span></a>).<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">H</span> <span class="id" title="var">l</span> <span class="id" title="var">l</span> <span class="id" title="var">p</span> (@<a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#eq_refl"><span class="id" title="constructor">eq_refl</span></a> <span class="id" title="var">_</span> <span class="id" title="var">l</span>)).<br/>
+&nbsp;&nbsp;<span class="id" title="var">eassumption</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

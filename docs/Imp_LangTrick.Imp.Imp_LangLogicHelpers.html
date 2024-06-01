@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>Imp_LangTrick.Imp.Imp_LangLogicHelpers</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library Imp_LangTrick.Imp.Imp_LangLogicHelpers</h1>
+
+<div class="code">
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Strings.String.html#"><span class="id" title="library">String</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Arith.Arith.html#"><span class="id" title="library">Arith</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.micromega.Psatz.html#"><span class="id" title="library">Psatz</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Bool.Bool.html#"><span class="id" title="library">Bool</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Program.Equality.html#"><span class="id" title="library">Program.Equality</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Imp_LangTrick</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#"><span class="id" title="library">Imp_LangTrickLanguage</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Local Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">string_scope</span>.<br/>
+<span class="id" title="keyword">Local Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">nat_scope</span>.<br/>
+<span class="id" title="keyword">Local Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">list_scope</span>.<br/>
+<span class="id" title="keyword">Local Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">imp_langtrick_scope</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="ident" class="idref" href="#ident"><span class="id" title="definition">ident</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a>.<br/>
+<span class="id" title="keyword">Definition</span> <a id="a" class="idref" href="#a"><span class="id" title="definition">a</span></a> : <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#aexp_Imp_Lang"><span class="id" title="inductive">aexp_Imp_Lang</span></a> := <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#VAR_Imp_Lang"><span class="id" title="constructor">VAR_Imp_Lang</span></a> "a".<br/>
+<span class="id" title="keyword">Definition</span> <a id="b" class="idref" href="#b"><span class="id" title="definition">b</span></a> : <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#aexp_Imp_Lang"><span class="id" title="inductive">aexp_Imp_Lang</span></a> := <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#VAR_Imp_Lang"><span class="id" title="constructor">VAR_Imp_Lang</span></a> "b".<br/>
+<span class="id" title="keyword">Definition</span> <a id="max_function_body" class="idref" href="#max_function_body"><span class="id" title="definition">max_function_body</span></a> : <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#imp_Imp_Lang"><span class="id" title="inductive">imp_Imp_Lang</span></a> := <br/>
+&nbsp;&nbsp;<a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:'when'_x_'then'_x_'else'_x_'done'"><span class="id" title="notation">when</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:'when'_x_'then'_x_'else'_x_'done'"><span class="id" title="notation">(</span></a><a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#a"><span class="id" title="definition">a</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:x_'&gt;d'_x"><span class="id" title="notation">&gt;</span></a><a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:x_'&gt;d'_x"><span class="id" title="notation">d</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#b"><span class="id" title="definition">b</span></a><a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:'when'_x_'then'_x_'else'_x_'done'"><span class="id" title="notation">)</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:'when'_x_'then'_x_'else'_x_'done'"><span class="id" title="notation">then</span></a> "ret" <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:x_'&lt;-'_x"><span class="id" title="notation">&lt;-</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#a"><span class="id" title="definition">a</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:'when'_x_'then'_x_'else'_x_'done'"><span class="id" title="notation">else</span></a> "ret" <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:x_'&lt;-'_x"><span class="id" title="notation">&lt;-</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#b"><span class="id" title="definition">b</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#::imp_langtrick_scope:'when'_x_'then'_x_'else'_x_'done'"><span class="id" title="notation">done</span></a>.<br/>
+<span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Lists.List.html#ListNotations"><span class="id" title="module">ListNotations</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "a_Imp_Lang_eq" <span class="id" title="keyword">constr</span>(<span class="id" title="var">n1</span>) <span class="id" title="keyword">constr</span>(<span class="id" title="var">n2</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">let</span> <span class="id" title="var">Heq</span> := <span class="id" title="tactic">fresh</span> "Ha_Imp_Lang_eq" <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">Heq</span>: <span class="id" title="var">n1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">n2</span>) <span class="id" title="tactic">by</span> (<span class="id" title="tactic">eapply</span> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#a_Imp_Lang_deterministic"><span class="id" title="lemma">a_Imp_Lang_deterministic</span></a>; <span class="id" title="var">eassumption</span>).<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">clean</span> <span class="id" title="var">H</span> := <span class="id" title="tactic">rewrite</span> <span class="id" title="var">H</span> <span class="id" title="tactic">in</span> *; <span class="id" title="tactic">clear</span> <span class="id" title="var">H</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">clean_vars</span> <span class="id" title="var">n1</span> <span class="id" title="var">n2</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| [ <span class="id" title="var">H</span> : <span class="id" title="var">n1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">n2</span> |- <span class="id" title="var">_</span> ] =&gt; <span class="id" title="tactic">rewrite</span> <span class="id" title="var">H</span> <span class="id" title="tactic">in</span> *; <span class="id" title="tactic">clear</span> <span class="id" title="var">H</span><br/>
+&nbsp;&nbsp;| [ <span class="id" title="var">H</span> : <span class="id" title="var">n2</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">n1</span> |- <span class="id" title="var">_</span> ] =&gt; <span class="id" title="tactic">rewrite</span> &lt;- <span class="id" title="var">H</span> <span class="id" title="tactic">in</span> *; <span class="id" title="tactic">clear</span> <span class="id" title="var">H</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">a_Imp_Lang_same</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| [ <span class="id" title="var">H1</span> : <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#a_Imp_Lang"><span class="id" title="inductive">a_Imp_Lang</span></a> ?<span class="id" title="var">a</span> ?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">n1</span>, <span class="id" title="var">H2</span> : <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#a_Imp_Lang"><span class="id" title="inductive">a_Imp_Lang</span></a> ?<span class="id" title="var">a</span> ?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">n2</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">H3</span> : <span class="id" title="var">n1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">n2</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">idtac</span> "equality"; <span class="id" title="tactic">idtac</span> <span class="id" title="var">n1</span>; <span class="id" title="tactic">idtac</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">idtac</span> "already exists"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">H3</span> : <span class="id" title="var">n2</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">n1</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">idtac</span> "equality"; <span class="id" title="tactic">idtac</span> <span class="id" title="var">n1</span>; <span class="id" title="tactic">idtac</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">idtac</span> "already exists"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span> =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">a_Imp_Lang_eq</span> <span class="id" title="var">n1</span> <span class="id" title="var">n2</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">n1</span> : <span class="id" title="var">_</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">clean_vars</span> <span class="id" title="var">n1</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">n1</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H1</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">n2</span> : <span class="id" title="var">_</span> |-  <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">clean_vars</span> <span class="id" title="var">n2</span> <span class="id" title="var">n1</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span> =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">clean_vars</span> <span class="id" title="var">n1</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "b_Imp_Lang_eq" <span class="id" title="keyword">constr</span>(<span class="id" title="var">b1</span>) <span class="id" title="keyword">constr</span>(<span class="id" title="var">b2</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">let</span> <span class="id" title="var">Heq</span> := <span class="id" title="tactic">fresh</span> "Hb_Imp_Lang_eq" <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">Heq</span> : <span class="id" title="var">b1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">b2</span>) <span class="id" title="tactic">by</span> (<span class="id" title="tactic">eapply</span> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#b_Imp_Lang_deterministic"><span class="id" title="lemma">b_Imp_Lang_deterministic</span></a>; <span class="id" title="var">eassumption</span>).<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">b_Imp_Lang_same</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| [ <span class="id" title="var">H1</span> : <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#b_Imp_Lang"><span class="id" title="inductive">b_Imp_Lang</span></a> ?<span class="id" title="var">b</span> ?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">n1</span>, <span class="id" title="var">H2</span>: <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#b_Imp_Lang"><span class="id" title="inductive">b_Imp_Lang</span></a> ?<span class="id" title="var">b</span> ?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">n2</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">H3</span>: <span class="id" title="var">n1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">n2</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">idtac</span> "equality"; <span class="id" title="tactic">idtac</span> <span class="id" title="var">n1</span>; <span class="id" title="tactic">idtac</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">idtac</span> "already exists"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">H3</span> : <span class="id" title="var">n2</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">n1</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">idtac</span> "equality"; <span class="id" title="tactic">idtac</span> <span class="id" title="var">n1</span>; <span class="id" title="tactic">idtac</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">idtac</span> "already exists"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span> =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">b_Imp_Lang_eq</span> <span class="id" title="var">n1</span> <span class="id" title="var">n2</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">n1</span> : <span class="id" title="var">_</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">clean_vars</span> <span class="id" title="var">n1</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">n1</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H1</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">n2</span> : <span class="id" title="var">_</span> |-  <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">clean_vars</span> <span class="id" title="var">n2</span> <span class="id" title="var">n1</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span> =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">clean_vars</span> <span class="id" title="var">n1</span> <span class="id" title="var">n2</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">subst</span>.<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">P</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> <span class="id" title="var">P</span>; <span class="id" title="tactic">subst</span>.<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_args_Imp_Lang" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">Ha_Imp_Lang</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">Hargs_Imp_Lang</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [  |<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">aexp</span> ?<span class="id" title="var">aexps</span> ?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">v</span> ?<span class="id" title="var">vals</span> <span class="id" title="var">Ha_Imp_Lang</span> <span class="id" title="var">Hargs_Imp_Lang</span>]; <span class="id" title="tactic">subst</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_args_Imp_Lang" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv_args_Imp_Lang</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> ?<span class="id" title="var">Ha_Imp_Lang</span> ?<span class="id" title="var">Hargs_Imp_Lang</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_Imp_Lang_app" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">ARGS</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">FOLDARGS</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">BODY</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">RET</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [  | <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">nenv'</span> ?<span class="id" title="var">nenv''</span> ?<span class="id" title="var">func</span> ?<span class="id" title="var">aexps</span> ?<span class="id" title="var">ns</span> ?<span class="id" title="var">ret</span> ?<span class="id" title="var">f</span> ?<span class="id" title="var">FUNC</span> <span class="id" title="var">ARGS</span> <span class="id" title="var">FOLDARGS</span> <span class="id" title="var">BODY</span> <span class="id" title="var">RET</span>].<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_var" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">STORE</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [  | ? ? ? ? <span class="id" title="var">STORE</span> |  |  | ].<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_a_bin" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">A1</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">A2</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [  | <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? ? ? ? ? ? <span class="id" title="var">A1</span> <span class="id" title="var">A2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;? ? ? ? ? ? <span class="id" title="var">A1</span> <span class="id" title="var">A2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| ].<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_b_bin" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">B1</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">B2</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [  | <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">bexp</span> ?<span class="id" title="var">b</span> <span class="id" title="var">B1</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">bexp1</span> ?<span class="id" title="var">bexp2</span> ?<span class="id" title="var">b1</span> ?<span class="id" title="var">b2</span> <span class="id" title="var">B1</span> <span class="id" title="var">B2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">bexp1</span> ?<span class="id" title="var">bexp2</span> ?<span class="id" title="var">b1</span> ?<span class="id" title="var">b2</span> <span class="id" title="var">B1</span> <span class="id" title="var">B2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">a1</span> ?<span class="id" title="var">a2</span> ?<span class="id" title="var">n1</span> ?<span class="id" title="var">n2</span> <span class="id" title="var">B1</span> <span class="id" title="var">B2</span>].<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_Imp_Lang_assign" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">EVAL</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [  | <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">x</span> ?<span class="id" title="var">a</span> ?<span class="id" title="var">n</span> <span class="id" title="var">EVAL</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|  ].<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_Imp_Lang_if" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">BTRUE</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">I1</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">BFALSE</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">I2</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [  |  ?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">nenv'</span> ?<span class="id" title="var">bexp</span> ?<span class="id" title="var">i1</span> ?<span class="id" title="var">i2</span> <span class="id" title="var">BTRUE</span> <span class="id" title="var">I1</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">nenv'</span> ?<span class="id" title="var">bexp</span> ?<span class="id" title="var">i1</span> ?<span class="id" title="var">i2</span> <span class="id" title="var">BFALSE</span> <span class="id" title="var">I2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|  ].<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_Imp_Lang_while" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">BFALSE</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">BTRUE</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">WHILE_BODY</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">INNER_LOOP</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [  | <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">bexp</span> ?<span class="id" title="var">i</span> <span class="id" title="var">BFALSE</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">nenv'</span> ?<span class="id" title="var">nenv''</span> ?<span class="id" title="var">bexp</span> ?<span class="id" title="var">i</span> <span class="id" title="var">BTRUE</span> <span class="id" title="var">WHILE_BODY</span> <span class="id" title="var">INNER_LOOP</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|  ].<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_Imp_Lang_seq" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">I1</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">I2</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [  | <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?<span class="id" title="var">dbenv</span> ?<span class="id" title="var">fenv</span> ?<span class="id" title="var">nenv</span> ?<span class="id" title="var">nenv'</span> ?<span class="id" title="var">nenv''</span> ?<span class="id" title="var">i1</span> ?<span class="id" title="var">i2</span> <span class="id" title="var">I1</span> <span class="id" title="var">I2</span>].<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">invc</span> <span class="id" title="var">H</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "clean" "&lt;-" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) := (<span class="id" title="tactic">symmetry</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>; <span class="id" title="var">clean</span> <span class="id" title="var">H</span>).<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">falsify</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| [ <span class="id" title="var">H</span> : ?<span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> ?<span class="id" title="var">y</span>, <span class="id" title="var">H'</span>: ?<span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;&gt;'_x"><span class="id" title="notation">&lt;&gt;</span></a> ?<span class="id" title="var">y</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#not"><span class="id" title="definition">not</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H'</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">H'</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span><br/>
+&nbsp;&nbsp;| [ <span class="id" title="var">H</span>: ?<span class="id" title="var">y</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> ?<span class="id" title="var">x</span>, <span class="id" title="var">H'</span> : ?<span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;&gt;'_x"><span class="id" title="notation">&lt;&gt;</span></a> ?<span class="id" title="var">y</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#not"><span class="id" title="definition">not</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H'</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">symmetry</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">H'</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "false_goal" :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">elimtype</span> <span class="id" title="var">False</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">false_post</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">solve</span> [ <span class="id" title="tactic">assumption</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="tactic">discriminate</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="tactic">congruence</span> ].<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "false" :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">false_goal</span>; <span class="id" title="tactic">try</span> <span class="id" title="var">false_post</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "tryfalse" :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">try</span> <span class="id" title="tactic">solve</span> [ <span class="id" title="var">false</span> ].<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">destruct_if_post</span> := <span class="id" title="var">tryfalse</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">discrim_neq</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| [ <span class="id" title="var">H</span>: ?<span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;&gt;'_x"><span class="id" title="notation">&lt;&gt;</span></a> ?<span class="id" title="var">x</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">x</span>) <span class="id" title="tactic">by</span> <span class="id" title="tactic">reflexivity</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">H'</span> : <span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">x</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#not"><span class="id" title="definition">not</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">apply</span> <span class="id" title="var">H</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H'</span>; <span class="id" title="tactic">inversion</span> <span class="id" title="var">H'</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "destruct_discrim" <span class="id" title="keyword">constr</span>(<span class="id" title="var">x</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">Eq1</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">Eq2</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">x</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">Eq1</span> | <span class="id" title="var">Eq2</span>]; <span class="id" title="tactic">try</span> <span class="id" title="tactic">discriminate</span>; <span class="id" title="tactic">try</span> <span class="id" title="var">discrim_neq</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "destruct_discrim" <span class="id" title="keyword">constr</span>(<span class="id" title="var">x</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">destruct_discrim</span> <span class="id" title="var">x</span> <span class="id" title="keyword">as</span> ? ?.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "destruct_if" "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">Eq1</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">Eq2</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| |- <span class="id" title="keyword">context</span> [ <span class="id" title="keyword">if</span> ?<span class="id" title="var">B</span> <span class="id" title="keyword">then</span> <span class="id" title="var">_</span> <span class="id" title="keyword">else</span> <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_discrim</span> <span class="id" title="var">B</span> <span class="id" title="keyword">as</span> <span class="id" title="var">Eq1</span> <span class="id" title="var">Eq2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| <span class="id" title="tactic">destruct</span> <span class="id" title="var">B</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">Eq1</span> | <span class="id" title="var">Eq2</span>]<br/>
+&nbsp;&nbsp;| <span class="id" title="var">K</span>: <span class="id" title="keyword">context</span> [ <span class="id" title="keyword">if</span> ?<span class="id" title="var">B</span> <span class="id" title="keyword">then</span> <span class="id" title="var">_</span> <span class="id" title="keyword">else</span> <span class="id" title="var">_</span> ] |- <span class="id" title="var">_</span> =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_discrim</span> <span class="id" title="var">B</span> <span class="id" title="keyword">as</span> <span class="id" title="var">Eq1</span> <span class="id" title="var">Eq2</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| <span class="id" title="tactic">destruct</span> <span class="id" title="var">B</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">Eq1</span> | <span class="id" title="var">Eq2</span>]<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>;<br/>
+&nbsp;&nbsp;<span class="id" title="var">tryfalse</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">resolve_inequalities</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">repeat</span> <span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">H</span>: ?<span class="id" title="var">n</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Arith.PeanoNat.html#0f31f5c1c6b6a21a3a187247222bc9e4"><span class="id" title="notation">&lt;=?</span></a> ?<span class="id" title="var">n'</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a> |- <span class="id" title="var">_</span> ] =&gt; <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Arith.Compare_dec.html#leb_complete"><span class="id" title="lemma">leb_complete</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">H</span>: ?<span class="id" title="var">n</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Arith.PeanoNat.html#0f31f5c1c6b6a21a3a187247222bc9e4"><span class="id" title="notation">&lt;=?</span></a> ?<span class="id" title="var">n'</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#false"><span class="id" title="constructor">false</span></a> |- <span class="id" title="var">_</span> ] =&gt; <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Arith.Compare_dec.html#leb_complete_conv"><span class="id" title="lemma">leb_complete_conv</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">fancy_unfold_update</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#update"><span class="id" title="definition">update</span></a>; <span class="id" title="tactic">simpl</span>;<br/>
+&nbsp;&nbsp;(<span class="id" title="tactic">auto</span> ||<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <span class="id" title="var">eq1</span> := <span class="id" title="tactic">fresh</span> "eq1" <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <span class="id" title="var">eq2</span> := <span class="id" title="tactic">fresh</span> "eq2" <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">try</span> <span class="id" title="var">destruct_if</span> <span class="id" title="keyword">as</span> <span class="id" title="var">eq1</span> <span class="id" title="var">eq2</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">try</span> <span class="id" title="var">discrim_neq</span>; <span class="id" title="var">resolve_inequalities</span>; <span class="id" title="tactic">auto</span>).<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">introv</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">hnf</span>; <span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| |- ?<span class="id" title="var">P</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a> ?<span class="id" title="var">Q</span> =&gt; <span class="id" title="tactic">idtac</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| |- <span class="id" title="keyword">forall</span> <span class="id" title="var">_</span>, <span class="id" title="var">_</span> =&gt; <span class="id" title="tactic">intro</span>; <span class="id" title="var">introv</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">rename_andb_term</span> <span class="id" title="var">H</span> <span class="id" title="var">H'</span> <span class="id" title="var">NEWNAME</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">type</span> <span class="id" title="keyword">of</span> <span class="id" title="var">H</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#b_Imp_Lang"><span class="id" title="inductive">b_Imp_Lang</span></a> <span class="id" title="var">_</span> <span class="id" title="var">_</span> <span class="id" title="var">_</span> ?<span class="id" title="var">b1</span> =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">type</span> <span class="id" title="keyword">of</span> <span class="id" title="var">H'</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="Imp_LangTrick.Imp.Imp_LangTrickLanguage.html#b_Imp_Lang"><span class="id" title="inductive">b_Imp_Lang</span></a> <span class="id" title="var">_</span> <span class="id" title="var">_</span> <span class="id" title="var">_</span> ?<span class="id" title="var">b2</span> =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">H''</span> : <span class="id" title="var">b1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#::bool_scope:x_'&amp;&amp;'_x"><span class="id" title="notation">&amp;&amp;</span></a> <span class="id" title="var">b2</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> ?<span class="id" title="var">b3</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">pose</span> <span class="id" title="var">proof</span> <span class="id" title="var">H''</span> <span class="id" title="keyword">as</span> <span class="id" title="var">NEWNAME</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H''</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| [ <span class="id" title="var">H''</span>: <span class="id" title="var">b2</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#::bool_scope:x_'&amp;&amp;'_x"><span class="id" title="notation">&amp;&amp;</span></a> <span class="id" title="var">b1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> ?<span class="id" title="var">b3</span> |- <span class="id" title="var">_</span> ] =&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">pose</span> <span class="id" title="var">proof</span> <span class="id" title="var">H''</span> <span class="id" title="keyword">as</span> <span class="id" title="var">NEWNAME</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H''</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span> =&gt; <span class="id" title="tactic">idtac</span> "no match"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span> =&gt; <span class="id" title="tactic">idtac</span> "no match for b2"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">_</span> =&gt;  <span class="id" title="tactic">idtac</span> "no match for b1"<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "inv_b_bin" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">B1</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">B2</span>) <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">B3</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">inv_b_bin</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> <span class="id" title="var">B1</span> <span class="id" title="var">B2</span>; <span class="id" title="var">rename_andb_term</span> <span class="id" title="var">B1</span> <span class="id" title="var">B2</span> <span class="id" title="var">B3</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "capply" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "capply" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "in" <span class="id" title="var">hyp</span>(<span class="id" title="var">H1</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">H</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H1</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "ceapply" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">eapply</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "ceapply" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "in" <span class="id" title="var">hyp</span>(<span class="id" title="var">H1</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">eapply</span> <span class="id" title="var">H</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H1</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">H</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="destruct_andb" class="idref" href="#destruct_andb"><span class="id" title="lemma">destruct_andb</span></a> :<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <a id="b1:1" class="idref" href="#b1:1"><span class="id" title="binder">b1</span></a> <a id="b2:2" class="idref" href="#b2:2"><span class="id" title="binder">b2</span></a>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#b1:1"><span class="id" title="variable">b1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#::bool_scope:x_'&amp;&amp;'_x"><span class="id" title="notation">&amp;&amp;</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#b2:2"><span class="id" title="variable">b2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">-&gt;</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">(</span></a><a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#b1:1"><span class="id" title="variable">b1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">/\</span></a> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#b2:2"><span class="id" title="variable">b2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.16.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">)</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">introv</span>. <span class="id" title="tactic">destruct</span> <span class="id" title="var">b1</span>, <span class="id" title="var">b2</span>; <span class="id" title="tactic">intros</span>; <span class="id" title="tactic">try</span> <span class="id" title="tactic">discriminate</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>; <span class="id" title="tactic">reflexivity</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "destruct_andb" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="Imp_LangTrick.Imp.Imp_LangLogicHelpers.html#destruct_andb"><span class="id" title="lemma">destruct_andb</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "destruct_andb" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) "as" <span class="id" title="var">simple_intropattern</span>(<span class="id" title="var">P</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">destruct_andb</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> <span class="id" title="var">P</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "a_Imp_Lang_elim" := <span class="id" title="tactic">repeat</span> <span class="id" title="var">a_Imp_Lang_same</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "b_Imp_Lang_elim" := <span class="id" title="tactic">repeat</span> <span class="id" title="var">b_Imp_Lang_same</span>.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>
