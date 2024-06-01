@@ -2,9 +2,9 @@
 
 1. [The CC proof
    compiler](docs/Imp_LangTrick.ProofCompiler.ProofCompCodeCompAgnosticMod.html#CompilerAgnosticProofCompilerType.proof_compiler)
-2. [The Tree proof compiler](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/ProofCompiler/TreeProofCompiler.v#L15)
-3. [The "preserves stack" relation, `exp_stack_pure_rel`](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/Stack/StackPurestBase.v#L27)
-4. [The relation between Imp environments and Stack's stacks](https://github.com/uwplse/potpie/tree/v0.4/Imp_LangTrick/SpecCompiler/LogicTranslationBase.v#L4)
+2. [The Tree proof compiler](docs/Imp_LangTrick.ProofCompiler.TreeProofCompiler.html#TreeProofCompiler)
+3. [The "preserves stack" relation, `exp_stack_pure_rel`](https://uwplse.org/potpie/docs/Imp_LangTrick.Stack.StackPurestBase.html#bexp_stack_pure_rel)
+4. [The relation between Imp environments and Stack's stacks](https://uwplse.org/potpie/docs/Imp_LangTrick.SpecCompiler.LogicTranslationBase.html#state_to_stack)
 5. [The Tree
    plugin](https://github.com/uwplse/potpie/tree/v0.4/plugin/src/)
 6. [An example of the plugin being invoked](https://github.com/uwplse/potpie/tree/v0.4/plugin/theories/Demo.v#L55)

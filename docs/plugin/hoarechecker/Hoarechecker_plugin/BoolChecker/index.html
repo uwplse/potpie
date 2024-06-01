@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>BoolChecker (hoarechecker.Hoarechecker_plugin.BoolChecker)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 2.4.2"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../index.html">hoarechecker</a> &#x00BB; <a href="../index.html">Hoarechecker_plugin</a> &#x00BB; BoolChecker</nav><header class="odoc-preamble"><h1>Module <code><span>Hoarechecker_plugin.BoolChecker</span></code></h1></header><div class="odoc-content"><div class="odoc-spec"><div class="spec value anchored" id="val-typechecks"><a href="#val-typechecks" class="anchor"></a><code><span><span class="keyword">val</span> typechecks : 
+  <span><span class="xref-unresolved">Environ</span>.env <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">Evd</span>.evar_map <span class="arrow">&#45;&gt;</span></span>
+  <span><span>(<span class="xref-unresolved">Evd</span>.evar_map * <span class="xref-unresolved">EConstr</span>.t)</span> option</span></span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-option_to_bool"><a href="#val-option_to_bool" class="anchor"></a><code><span><span class="keyword">val</span> option_to_bool : <span><span><span class="type-var">'a</span> option</span> <span class="arrow">&#45;&gt;</span></span> bool</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-is_inductive_type"><a href="#val-is_inductive_type" class="anchor"></a><code><span><span class="keyword">val</span> is_inductive_type : 
+  <span><span class="xref-unresolved">Names</span>.inductive <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">Environ</span>.env <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">Evd</span>.evar_map <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span class="xref-unresolved">Evd</span>.evar_map * bool</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-is_basic_aimpstk"><a href="#val-is_basic_aimpstk" class="anchor"></a><code><span><span class="keyword">val</span> is_basic_aimpstk : 
+  <span><span class="xref-unresolved">Environ</span>.env <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">Evd</span>.evar_map <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span class="xref-unresolved">Evd</span>.evar_map * bool</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-print_results"><a href="#val-print_results" class="anchor"></a><code><span><span class="keyword">val</span> print_results : <span>string <span class="arrow">&#45;&gt;</span></span> <span><span>bool list</span> <span class="arrow">&#45;&gt;</span></span> unit</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-csp"><a href="#val-csp" class="anchor"></a><code><span><span class="keyword">val</span> csp : 
+  <span><span class="xref-unresolved">Environ</span>.env <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">Evd</span>.evar_map <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../Stkhoaretree/index.html#type-stk_hoare_tree">Stkhoaretree.stk_hoare_tree</a> <span class="arrow">&#45;&gt;</span></span>
+  <span class="xref-unresolved">Evd</span>.evar_map * bool</span></code></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-check_stack_proof"><a href="#val-check_stack_proof" class="anchor"></a><code><span><span class="keyword">val</span> check_stack_proof : 
+  <span><span class="xref-unresolved">Environ</span>.env <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">EConstr</span>.t <span class="arrow">&#45;&gt;</span></span>
+  <span><span class="xref-unresolved">Evd</span>.evar_map <span class="arrow">&#45;&gt;</span></span>
+  <span class="xref-unresolved">Evd</span>.evar_map * <span class="xref-unresolved">EConstr</span>.t</span></code></div></div></div></body></html>
